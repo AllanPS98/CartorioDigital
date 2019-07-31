@@ -52,6 +52,8 @@ public class Handler {
     }
     
     public String cadastrarDocumento(Documento doc){
+        String docCodificado = codificarTexto(doc.getTexto());
+        doc.setTexto(docCodificado);
         for(int i = 0; i < usuarios.size(); i++){
             if(doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())){
                 usuarios.get(i).getDocumentos().add(doc);
