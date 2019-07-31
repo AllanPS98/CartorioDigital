@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -118,6 +119,15 @@ public class Handler {
     
     public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException{
         return criptografarSenha(senhaA).equals(criptografarSenha(senhaB));
+    }
+    
+    public String codificarTexto(String texto){
+        return Base64.encodeBase64String(texto.getBytes());
+    }
+    
+    public String decodificarTexto(String texto){
+        byte[] decoded = Base64.decodeBase64(texto.getBytes());
+        return new String(decoded);
     }
     
 }
