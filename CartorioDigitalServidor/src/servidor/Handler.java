@@ -13,6 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,9 +34,9 @@ public class Handler {
 
     }
 
-    public void cadastrarUsuario(String nome, String cpf, String senha) {
+    public void cadastrarUsuario(String nome, String cpf, String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         
-        Cidadao cid = new Cidadao(nome, cpf, senha);
+        Cidadao cid = new Cidadao(nome, cpf, criptografarSenha(senha));
         usuarios.add(cid);
         if(usuarios.get(usuarios.size()-1).getDocumentos()==null){
             usuarios.get(usuarios.size()-1).criarListaDocsVazia();
@@ -99,6 +102,22 @@ public class Handler {
             System.out.println("Ainda não existe nenhum arquivo com esse caminho => " + nome);
         }
 
+    }
+    
+    public String criptografarSenha(String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
+        byte messageDigest[] = algorithm.digest("abc".getBytes("UTF-8"));
+
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : messageDigest) {
+          hexString.append(String.format("%02X", 0xFF & b));
+        }
+        String senhaCrip = hexString.toString();
+        return senhaCrip;
+    }
+    
+    public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        return criptografarSenha(senhaA).equals(criptografarSenha(senhaB));
     }
     
 }

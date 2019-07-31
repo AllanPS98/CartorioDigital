@@ -5,7 +5,6 @@ package servidor;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import cliente.Cidadao;
 import cliente.Documento;
 import cliente.Protocolo;
 import java.io.ByteArrayInputStream;
@@ -18,7 +17,9 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,9 +97,11 @@ public class ThreadTCP implements Runnable {
                     String senha = (String) input();
                     boolean podeLogar = false;
                     for(int i = 0; i < Handler.usuarios.size(); i++){
-                        if(cpf.equals(Handler.usuarios.get(i).getCpf()) && senha.equals(Handler.usuarios.get(i).getSenha())){
-                            output("Login efetuado com sucesso");
-                            podeLogar = true;
+                        if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                            if (han.verificarSenha(senha, Handler.usuarios.get(i).getSenha())) {
+                                output("Login efetuado com sucesso");
+                                podeLogar = true;
+                            }
                         }
                     }
                     if(!podeLogar){
@@ -113,6 +116,8 @@ public class ThreadTCP implements Runnable {
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Erro no protocolo recebido");
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
