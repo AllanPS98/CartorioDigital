@@ -16,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,10 +28,13 @@ public class Cliente {
     ObjectOutputStream out;
     ObjectInputStream in;
     Cidadao usuario;
-    Socket cliente;
+    SSLSocket cliente;
+    SSLSocketFactory factory;
     
+
     public void cliente(String ip, int porta) throws IOException {
-        cliente = new Socket(ip, porta);
+        factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        cliente = (SSLSocket) factory.createSocket(ip, porta);
         out = new ObjectOutputStream(cliente.getOutputStream());
         in = new ObjectInputStream(cliente.getInputStream());
         System.out.println("CLIENTE CONECTADO");

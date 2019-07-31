@@ -14,6 +14,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 
 /**
  *
@@ -34,16 +37,19 @@ public class Servidor {
         boolean erro = true;
         while (erro) {
             try {
-                ServerSocket servidor = new ServerSocket(PORTATCP);
+                SSLServerSocket server;
+                SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+                server = (SSLServerSocket) factory.createServerSocket(PORTATCP);
+                
                 erro = false;
                 new Thread() {
                     @Override
                     public void run() {
                         while (true) {
                             System.out.println("Esperando cliente TCP na porta = " + PORTATCP + "......");
-                            Socket cliente;
+                            
                             try {
-                                cliente = servidor.accept();
+                                SSLSocket cliente = (SSLSocket) server.accept();
                                 System.out.println("cliente conectado");
                                 ObjectInputStream in = new ObjectInputStream(cliente.getInputStream());
                                 ObjectOutputStream out = new ObjectOutputStream(cliente.getOutputStream());
