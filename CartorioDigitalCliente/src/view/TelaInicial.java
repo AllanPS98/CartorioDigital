@@ -106,6 +106,10 @@ public class TelaInicial extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        System.setProperty("javax.net.debug", "all");
+        System.setProperty("javax.net.ssl.trustStore", "clienteCartorioTrustStore.key");
+        System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

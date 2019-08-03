@@ -29,6 +29,11 @@ public class Servidor {
     static Handler han = Handler.getInstance();
 
     public static void main(String[] args) throws IOException {
+        System.setProperty("javax.net.debug", "all");
+        System.setProperty("javax.net.ssl.keyStore", "ssl\\servidorCartorio.key");
+        System.setProperty("javax.net.ssl.keyStorePassword", "allanpereira11");
+        System.setProperty("javax.net.ssl.trustStore", "ssl\\servidorCartorioTrustStore.key");
+        System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         ouvirTCP();
         ouvirUDP();
     }
@@ -37,6 +42,7 @@ public class Servidor {
         boolean erro = true;
         while (erro) {
             try {
+                
                 SSLServerSocket server;
                 SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
                 server = (SSLServerSocket) factory.createServerSocket(PORTATCP);
@@ -46,6 +52,7 @@ public class Servidor {
                     @Override
                     public void run() {
                         while (true) {
+                            
                             System.out.println("Esperando cliente TCP na porta = " + PORTATCP + "......");
                             
                             try {

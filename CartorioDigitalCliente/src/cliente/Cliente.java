@@ -7,6 +7,7 @@ package cliente;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -14,8 +15,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.security.KeyStore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
@@ -33,8 +37,10 @@ public class Cliente {
     
 
     public void cliente(String ip, int porta) throws IOException {
+        
         factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         cliente = (SSLSocket) factory.createSocket(ip, porta);
+        //cliente.startHandshake();
         out = new ObjectOutputStream(cliente.getOutputStream());
         in = new ObjectInputStream(cliente.getInputStream());
         System.out.println("CLIENTE CONECTADO");
