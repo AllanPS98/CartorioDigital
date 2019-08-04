@@ -5,6 +5,7 @@ package servidor;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import cliente.Cidadao;
 import cliente.Documento;
 import cliente.Protocolo;
 import java.io.ByteArrayInputStream;
@@ -17,7 +18,6 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 
@@ -45,72 +45,74 @@ public class ThreadTCP implements Runnable {
 
     @Override
     public void run() {
-
+        try {
+            carregarDados();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int protocoloAtual;
         while (true) {
-            try {
-                carregarDados();
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            int protocoloAtual;
+
             try {
                 protocoloAtual = (int) input();
                 if (protocoloAtual == Protocolo.CADASTRAR_DOCUMENTO) {
                     String login = (String) input();
                     String texto = (String) input();
                     boolean achou = false;
-                    for(int i = 0; i < Handler.usuarios.size(); i++){
-                        if(login.equals(Handler.usuarios.get(i).getCpf())){
+                    for (int i = 0; i < Handler.usuarios.size(); i++) {
+                        if (login.equals(Handler.usuarios.get(i).getCpf())) {
                             Documento doc = new Documento(Handler.usuarios.get(i).getDocumentos().size() + 1,
-                                                Handler.usuarios.get(i).getNome(), login, texto);
+                                    Handler.usuarios.get(i).getNome(), login, texto);
                             String resultado = han.cadastrarDocumento(doc);
                             achou = true;
                             output(resultado);
                         }
                     }
-                    if(!achou){
+                    if (!achou) {
                         output("Erro");
                     }
-                    
-                }else if(protocoloAtual == Protocolo.CADASTRAR_USUARIO){
+
+                } else if (protocoloAtual == Protocolo.CADASTRAR_USUARIO) {
                     String nome = (String) input();
                     String cpf = (String) input();
                     String senha = (String) input();
                     String confirmaSenha = (String) input();
                     boolean cpfIgual = false;
-                    if(senha.equals(confirmaSenha)){
-                        for(int i = 0; i < Handler.usuarios.size(); i++){
-                            if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                    if (senha.equals(confirmaSenha)) {
+                        for (int i = 0; i < Handler.usuarios.size(); i++) {
+                            if (cpf.equals(Handler.usuarios.get(i).getCpf())) {
                                 cpfIgual = true;
                                 output("Já existe alguém cadastrado com esse CPF.");
                             }
                         }
-                    }else{
+                    } else {
                         output("A senha está diferente no campo de confirmação.");
                     }
-                    if(!cpfIgual){
+                    if (!cpfIgual) {
                         han.cadastrarUsuario(nome, cpf, senha);
+                        MulticastSender sender = new MulticastSender();
+                        sender.output(new Cidadao(nome, cpf, senha).toString());
                         output("Cadastro efetuado com sucesso");
                     }
-                }else if(protocoloAtual == Protocolo.LOGIN){
+                } else if (protocoloAtual == Protocolo.LOGIN) {
                     String cpf = (String) input();
                     String senha = (String) input();
                     boolean podeLogar = false;
-                    for(int i = 0; i < Handler.usuarios.size(); i++){
-                        if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                    for (int i = 0; i < Handler.usuarios.size(); i++) {
+                        if (cpf.equals(Handler.usuarios.get(i).getCpf())) {
                             if (han.verificarSenha(senha, Handler.usuarios.get(i).getSenha())) {
                                 output("Login efetuado com sucesso");
                                 podeLogar = true;
                             }
                         }
                     }
-                    if(!podeLogar){
+                    if (!podeLogar) {
                         output("Não foi encontrado nenhum usuário com esse CPF.");
                     }
-                    
-                }else if(protocoloAtual == Protocolo.TRANSFERIR_DOCUMENTO){
-                    
-                }else if(protocoloAtual == Protocolo.SAIR){
+
+                } else if (protocoloAtual == Protocolo.TRANSFERIR_DOCUMENTO) {
+
+                } else if (protocoloAtual == Protocolo.SAIR) {
                     sair();
                     break;
                 }
@@ -137,7 +139,7 @@ public class ThreadTCP implements Runnable {
                 obj.writeObject(((ObjectInputStream) tcpInput).readObject());
                 bytes.toByteArray();
                 Object mensagem = desserializarMensagem(bytes.toByteArray());
-                System.out.println(mensagem.toString());
+
                 return mensagem;
             } catch (ClassNotFoundException e) {
                 Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, e);
@@ -182,7 +184,7 @@ public class ThreadTCP implements Runnable {
         return (Object) leitor.readObject();
 
     }
-    
+
     public static void carregarDados() throws IOException, FileNotFoundException, ClassNotFoundException {
         han.lerArquivoSerial("dados\\usuarios");
     }

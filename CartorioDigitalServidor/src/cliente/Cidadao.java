@@ -53,8 +53,14 @@ public class Cidadao implements Serializable{
     }
 
     public void criarListaDocsVazia() {
-        this.documentos = new LinkedList<Documento>();
+        this.documentos = new LinkedList<>();
     }
+
+    @Override
+    public String toString() {
+        return nome+";"+cpf+";"+senha+";";
+    }
+    
     
     
 }

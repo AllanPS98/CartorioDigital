@@ -26,7 +26,7 @@ public class Servidor {
     static Handler han = Handler.getInstance();
 
     public static void main(String[] args) throws IOException {
-        System.setProperty("javax.net.debug", "all");
+        //System.setProperty("javax.net.debug", "all");
         System.setProperty("javax.net.ssl.keyStore", "ssl\\servidorCartorio.key");
         System.setProperty("javax.net.ssl.keyStorePassword", "allanpereira11");
         System.setProperty("javax.net.ssl.trustStore", "ssl\\servidorCartorioTrustStore.key");
@@ -43,7 +43,7 @@ public class Servidor {
                 SSLServerSocket server;
                 SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
                 server = (SSLServerSocket) factory.createServerSocket(PORTATCP);
-                
+          
                 erro = false;
                 new Thread() {
                     @Override
@@ -71,30 +71,18 @@ public class Servidor {
             }
         }
         
-        //Server thread = new Server(servidor);
-        //Thread t = new Thread(thread);
-        //t.start
-        
-        
     }
 
     public static void ouvirUDP() throws IOException {
 
-        InetAddress grupo = InetAddress.getByName("225.4.5.6");
-        MulticastSocket multiReceiver = new MulticastSocket(PORTAUDP);
-        multiReceiver.joinGroup(grupo);
-        MulticastSocket multiSender = new MulticastSocket();
-        
         new Thread() {
             @Override
             public void run() {
                 //while (true) {
-                    
                     System.out.println("Esperando cliente UDP......");
-                    
                     //System.out.println("Datagrama UDP [" + numConn + "] recebido...");
-                    ThreadUDP thr = new ThreadUDP(multiSender, multiReceiver, han, grupo, PORTAUDP);
-                    Thread t = new Thread(thr);
+                    MulticastReceiverCidadao receiver = new MulticastReceiverCidadao(han);
+                    Thread t = new Thread(receiver);
                     t.start();
                 //}
             }

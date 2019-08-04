@@ -51,6 +51,20 @@ public class Handler {
         }
     }
     
+    public void cadastrarUsuario(Cidadao cid) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        usuarios.add(cid);
+        if(usuarios.get(usuarios.size()-1).getDocumentos()==null){
+            usuarios.get(usuarios.size()-1).criarListaDocsVazia();
+        }
+        
+        try {
+            escreverArquivoSerial("dados\\usuarios", usuarios);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public String cadastrarDocumento(Documento doc){
         String docCodificado = codificarTexto(doc.getTexto());
         doc.setTexto(docCodificado);
@@ -68,7 +82,7 @@ public class Handler {
         }
         return "Erro ao cadastrar documento";
     }
-
+    
     public static Handler getInstance() {
         if (han == null) {
             han = new Handler();
@@ -109,7 +123,7 @@ public class Handler {
     
     public String criptografarSenha(String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException{
         MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
-        byte messageDigest[] = algorithm.digest("abc".getBytes("UTF-8"));
+        byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
 
         StringBuilder hexString = new StringBuilder();
         for (byte b : messageDigest) {

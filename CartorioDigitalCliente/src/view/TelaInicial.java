@@ -107,7 +107,7 @@ public class TelaInicial extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         
-        System.setProperty("javax.net.debug", "all");
+        //System.setProperty("javax.net.debug", "all");
         System.setProperty("javax.net.ssl.trustStore", "clienteCartorioTrustStore.key");
         System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         /* Set the Nimbus look and feel */

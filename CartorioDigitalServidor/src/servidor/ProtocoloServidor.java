@@ -10,6 +10,6 @@ package servidor;
  * @author User
  */
 public class ProtocoloServidor {
-    public static String SINCRONIZAR = "1";
+    public static String SINCRONIZAR_CADASTRO_CIDADAO = "1";
     
 }
