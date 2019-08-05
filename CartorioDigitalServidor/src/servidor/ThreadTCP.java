@@ -20,6 +20,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -125,6 +127,16 @@ public class ThreadTCP implements Runnable {
                 } else if (protocoloAtual == Protocolo.SAIR) {
                     sair();
                     break;
+                } else if (protocoloAtual == Protocolo.CARREGAR_LISTA_DOCUMENTOS) {
+                    String cpf = (String) input();
+                    List<Documento> docs = new LinkedList();
+                    for(int i = 0; i < Handler.usuarios.size(); i++){
+                        if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                            docs = Handler.usuarios.get(i).getDocumentos();
+                            break;
+                        }
+                    }
+                    output(docs);
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Erro no protocolo recebido");

@@ -16,6 +16,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.KeyStore;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.KeyManagerFactory;
@@ -34,7 +35,7 @@ public class Cliente {
     Cidadao usuario;
     SSLSocket cliente;
     SSLSocketFactory factory;
-    
+    public static List<Documento> docs;
 
     public void cliente(String ip, int porta) throws IOException {
         
@@ -164,5 +165,11 @@ public class Cliente {
         }
         
         return resultado;
+    }
+    
+    public void carregarListaDocumentos(String cpf) throws IOException, ClassNotFoundException{
+        output(Protocolo.CARREGAR_LISTA_DOCUMENTOS);
+        output(cpf);
+        docs = (List<Documento>) input();
     }
 }

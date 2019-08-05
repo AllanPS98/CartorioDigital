@@ -5,6 +5,12 @@
  */
 package view;
 
+import cliente.Cliente;
+import cliente.Documento;
+import java.io.IOException;
+import java.util.List;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author User
@@ -14,11 +20,25 @@ public class BuscarDocumentos extends javax.swing.JFrame {
     /**
      * Creates new form BuscarDocumentos
      */
+    DefaultListModel modelo;
+    List<Documento> docs;
     public static BuscarDocumentos buscarDocs;
-    public BuscarDocumentos() {
+    public BuscarDocumentos() throws IOException, ClassNotFoundException {
         initComponents();
+        adicionarElementos();
     }
+    
+    public void adicionarElementos() throws IOException, ClassNotFoundException {
+        Cliente cliente = new Cliente();
+        cliente.carregarListaDocumentos(Login.loginCPF);
+        docs = Cliente.docs;
+        listaDocs.removeAll();
+        modelo = new DefaultListModel();
+        for(int i = 0; i < docs.size(); i++){
+            modelo.addElement(docs.get(i).getId());
+        }
 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,7 +49,7 @@ public class BuscarDocumentos extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        listaDocs = new javax.swing.JList<>();
         ver = new javax.swing.JButton();
         voltar = new javax.swing.JButton();
 
@@ -37,14 +57,19 @@ public class BuscarDocumentos extends javax.swing.JFrame {
         setTitle("Lista de Documentos");
         setResizable(false);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listaDocs.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaDocs);
 
         ver.setText("Ver");
+        ver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verActionPerformed(evt);
+            }
+        });
 
         voltar.setText("<");
 
@@ -78,44 +103,15 @@ public class BuscarDocumentos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarDocumentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarDocumentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarDocumentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarDocumentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void verActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verActionPerformed
+        
+    }//GEN-LAST:event_verActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuscarDocumentos().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> listaDocs;
     private javax.swing.JButton ver;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
