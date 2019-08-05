@@ -23,10 +23,18 @@ public class MulticastSender {
     
     
     
-    public void output(String msg) throws UnknownHostException, IOException{
+    public void outputCidadao(String msg) throws UnknownHostException, IOException{
         InetAddress grupo = InetAddress.getByName("225.4.5.6");
         MulticastSocket multi = new MulticastSocket();
         DatagramPacket pkt = new DatagramPacket(msg.getBytes(), msg.length(), grupo, 3456);
+        multi.send(pkt);
+        multi.close();
+    }
+    
+    public void outputDocumento(String msg) throws UnknownHostException, IOException{
+        InetAddress grupo = InetAddress.getByName("225.4.5.7");
+        MulticastSocket multi = new MulticastSocket();
+        DatagramPacket pkt = new DatagramPacket(msg.getBytes(), msg.length(), grupo, 3457);
         multi.send(pkt);
         multi.close();
     }

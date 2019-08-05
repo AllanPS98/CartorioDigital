@@ -149,10 +149,11 @@ public class Cliente {
         return resultado;
     }
 
-    public String cadastrarDocumento(String loginAux, String text) {
+    public String cadastrarDocumento(String loginAux, String text, String latitude, String longitude) {
         String resultado = "";
         try {
             output(Protocolo.CADASTRAR_DOCUMENTO);
+            output(latitude+"/"+longitude);
             output(loginAux);
             output(text);
             resultado = (String) input();

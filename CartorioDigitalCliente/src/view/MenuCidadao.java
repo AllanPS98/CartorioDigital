@@ -42,6 +42,11 @@ public class MenuCidadao extends javax.swing.JFrame {
         });
 
         verDocumentos.setText("Ver Documentos");
+        verDocumentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verDocumentosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,6 +75,13 @@ public class MenuCidadao extends javax.swing.JFrame {
         menucidadao = null;
         CadastroDocumentos.cadastro_documentos.setVisible(true);
     }//GEN-LAST:event_cadastrarDocumentosActionPerformed
+
+    private void verDocumentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDocumentosActionPerformed
+        BuscarDocumentos.buscarDocs = new BuscarDocumentos();
+        this.setVisible(false);
+        menucidadao = null;
+        BuscarDocumentos.buscarDocs.setVisible(true);
+    }//GEN-LAST:event_verDocumentosActionPerformed
 
     
 

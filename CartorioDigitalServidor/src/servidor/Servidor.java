@@ -32,26 +32,23 @@ public class Servidor {
         System.setProperty("javax.net.ssl.trustStore", "ssl\\servidorCartorioTrustStore.key");
         System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         ouvirTCP();
-        ouvirUDP();
+        ouvirUDPCidadao();
+        ouvirUDPDocumento();
     }
 
     public static void ouvirTCP() throws IOException {
         boolean erro = true;
         while (erro) {
             try {
-                
                 SSLServerSocket server;
                 SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
                 server = (SSLServerSocket) factory.createServerSocket(PORTATCP);
-          
                 erro = false;
                 new Thread() {
                     @Override
                     public void run() {
                         while (true) {
-                            
                             System.out.println("Esperando cliente TCP na porta = " + PORTATCP + "......");
-                            
                             try {
                                 SSLSocket cliente = (SSLSocket) server.accept();
                                 System.out.println("cliente conectado");
@@ -61,7 +58,7 @@ public class Servidor {
                                 Thread t = new Thread(thread);
                                 t.start();
                             } catch (IOException ex) {
-                                
+
                             }
                         }
                     }
@@ -70,24 +67,30 @@ public class Servidor {
                 PORTATCP++;
             }
         }
-        
     }
 
-    public static void ouvirUDP() throws IOException {
-
+    public static void ouvirUDPCidadao() throws IOException {
         new Thread() {
             @Override
             public void run() {
-                //while (true) {
-                    System.out.println("Esperando cliente UDP......");
-                    //System.out.println("Datagrama UDP [" + numConn + "] recebido...");
-                    MulticastReceiverCidadao receiver = new MulticastReceiverCidadao(han);
-                    Thread t = new Thread(receiver);
-                    t.start();
-                //}
+                System.out.println("Esperando Datagram Cidadão......");
+                MulticastReceiverCidadao receiver = new MulticastReceiverCidadao(han);
+                Thread t = new Thread(receiver);
+                t.start();
             }
         }.start();
+    }
 
+    public static void ouvirUDPDocumento() throws IOException {
+        new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Esperando Datagram Documento......");
+                MulticastReceiverDocumento receiver = new MulticastReceiverDocumento(han);
+                Thread t = new Thread(receiver);
+                t.start();
+            }
+        }.start();
     }
 
 }

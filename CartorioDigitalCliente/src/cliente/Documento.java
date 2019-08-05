@@ -13,24 +13,24 @@ import java.util.Date;
  * @author User
  */
 public class Documento implements Serializable{
-    int id;
+    String id;
     String proprietario;
     String cpf_proprietario;
     String texto;
     Date data;
 
-    public Documento(int id, String proprietario, String cpf_proprietario, String texto) {
+    public Documento(String id, String proprietario, String cpf_proprietario, String texto) {
         this.id = id;
         this.proprietario = proprietario;
         this.cpf_proprietario = cpf_proprietario;
         this.texto = texto;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,5 +58,8 @@ public class Documento implements Serializable{
         this.texto = texto;
     }
     
-    
+    @Override
+    public String toString() {
+        return id + ";" + proprietario + ";" + cpf_proprietario + ";" + texto + ";" + data + ";";
+    }
 }

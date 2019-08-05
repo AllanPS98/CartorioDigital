@@ -14,6 +14,7 @@ public class BuscarDocumentos extends javax.swing.JFrame {
     /**
      * Creates new form BuscarDocumentos
      */
+    public static BuscarDocumentos buscarDocs;
     public BuscarDocumentos() {
         initComponents();
     }

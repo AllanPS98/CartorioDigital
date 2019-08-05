@@ -56,16 +56,26 @@ public class ThreadTCP implements Runnable {
             try {
                 protocoloAtual = (int) input();
                 if (protocoloAtual == Protocolo.CADASTRAR_DOCUMENTO) {
+                    String id = (String) input();
                     String login = (String) input();
                     String texto = (String) input();
                     boolean achou = false;
+                    boolean podeCadastrar = true;
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
                         if (login.equals(Handler.usuarios.get(i).getCpf())) {
-                            Documento doc = new Documento(Handler.usuarios.get(i).getDocumentos().size() + 1,
-                                    Handler.usuarios.get(i).getNome(), login, texto);
-                            String resultado = han.cadastrarDocumento(doc);
-                            achou = true;
-                            output(resultado);
+                            for (int j = 0; j < Handler.usuarios.get(i).getDocumentos().size(); j++) {
+                                if (Handler.usuarios.get(i).getDocumentos().get(j).getId().equals(id)) {
+                                    podeCadastrar = false;
+                                }
+                            }
+                            if (podeCadastrar) {
+                                Documento doc = new Documento(id, Handler.usuarios.get(i).getNome(), login, texto);
+                                String resultado = han.cadastrarDocumento(doc);
+                                MulticastSender sender = new MulticastSender();
+                                sender.outputDocumento(doc.toString());
+                                achou = true;
+                                output(resultado);
+                            }
                         }
                     }
                     if (!achou) {
@@ -91,7 +101,7 @@ public class ThreadTCP implements Runnable {
                     if (!cpfIgual) {
                         han.cadastrarUsuario(nome, cpf, senha);
                         MulticastSender sender = new MulticastSender();
-                        sender.output(new Cidadao(nome, cpf, senha).toString());
+                        sender.outputCidadao(new Cidadao(nome, cpf, senha).toString());
                         output("Cadastro efetuado com sucesso");
                     }
                 } else if (protocoloAtual == Protocolo.LOGIN) {

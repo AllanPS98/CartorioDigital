@@ -90,7 +90,7 @@ public class Handler {
         return han;
     }
 
-    public void escreverArquivoSerial(String nome, Object obj) throws FileNotFoundException, IOException {
+    private void escreverArquivoSerial(String nome, Object obj) throws FileNotFoundException, IOException {
         //Classe responsavel por inserir os objetos
         try (FileOutputStream arquivo = new FileOutputStream(nome)) {
             //Grava o objeto cliente no arquivo

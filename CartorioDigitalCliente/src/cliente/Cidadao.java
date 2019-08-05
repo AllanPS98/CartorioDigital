@@ -57,5 +57,8 @@ public class Cidadao implements Serializable{
         return documentos;
     }
     
-    
+    @Override
+    public String toString() {
+        return nome+";"+cpf+";"+senha+";";
+    }
 }
