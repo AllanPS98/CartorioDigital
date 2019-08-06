@@ -17,4 +17,5 @@ public class Protocolo {
     public static int CADASTRAR_DOCUMENTO = 4;
     public static int TRANSFERIR_DOCUMENTO = 5;
     public static int CARREGAR_LISTA_DOCUMENTOS = 6;
+    public static int DECODIFICAR_DOC = 7;
 }

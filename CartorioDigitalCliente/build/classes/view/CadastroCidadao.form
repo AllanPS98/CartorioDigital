@@ -118,6 +118,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="voltarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

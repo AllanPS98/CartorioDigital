@@ -66,6 +66,11 @@ public class CadastroCidadao extends javax.swing.JFrame {
         });
 
         voltar.setText("<");
+        voltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,6 +142,12 @@ public class CadastroCidadao extends javax.swing.JFrame {
         }
         cliente.sair();
     }//GEN-LAST:event_cadastrarActionPerformed
+
+    private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
+       this.setVisible(false);
+       Login.telaLogin = new Login();
+       Login.telaLogin.setVisible(true);
+    }//GEN-LAST:event_voltarActionPerformed
 
     
 

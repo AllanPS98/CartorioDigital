@@ -5,6 +5,10 @@
  */
 package view;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author karol
@@ -77,10 +81,16 @@ public class MenuCidadao extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastrarDocumentosActionPerformed
 
     private void verDocumentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDocumentosActionPerformed
-        BuscarDocumentos.buscarDocs = new BuscarDocumentos();
-        this.setVisible(false);
-        menucidadao = null;
-        BuscarDocumentos.buscarDocs.setVisible(true);
+        
+        try {
+            BuscarDocumentos.buscarDocs = new BuscarDocumentos();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            this.setVisible(false);
+            menucidadao = null;
+            BuscarDocumentos.buscarDocs.setVisible(true);
+        
     }//GEN-LAST:event_verDocumentosActionPerformed
 
     

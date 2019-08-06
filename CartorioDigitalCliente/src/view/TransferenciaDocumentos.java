@@ -14,6 +14,7 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
     /**
      * Creates new form TransferenciaDocumentos
      */
+    public static TransferenciaDocumentos telaTransferencia;
     public TransferenciaDocumentos() {
         initComponents();
     }

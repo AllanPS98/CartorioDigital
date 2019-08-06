@@ -5,6 +5,10 @@
  */
 package view;
 
+import cliente.Cliente;
+import cliente.Documento;
+import java.io.IOException;
+
 /**
  *
  * @author User
@@ -14,9 +18,18 @@ public class ExibirDocumento extends javax.swing.JFrame {
     /**
      * Creates new form ExibirDocumento
      */
-    public ExibirDocumento() {
+    public static ExibirDocumento exibirDoc;
+    public ExibirDocumento() throws IOException, ClassNotFoundException {
         initComponents();
-
+        Documento doc = BuscarDocumentos.docSelecionado;
+        this.nomeProprietario.setText(doc.getProprietario()); 
+        this.numeroCPF.setText(doc.getCpf_proprietario());
+        Cliente cliente = new Cliente();
+        cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
+        System.out.println("iniciou cliente");
+        String decod = cliente.decodificarTextoDoc(doc.getTexto());
+        this.textoDocumento.setText(decod);
+        cliente.sair();
     }
 
     /**
@@ -61,6 +74,11 @@ public class ExibirDocumento extends javax.swing.JFrame {
         voltar.setText("<");
 
         transferir.setText("Transferir");
+        transferir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transferirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,40 +128,13 @@ public class ExibirDocumento extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExibirDocumento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExibirDocumento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExibirDocumento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExibirDocumento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void transferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferirActionPerformed
+        TransferenciaDocumentos.telaTransferencia = new TransferenciaDocumentos();
+        this.setVisible(false);
+        TransferenciaDocumentos.telaTransferencia.setVisible(true);
+    }//GEN-LAST:event_transferirActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ExibirDocumento().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

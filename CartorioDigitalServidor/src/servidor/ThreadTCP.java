@@ -57,6 +57,7 @@ public class ThreadTCP implements Runnable {
 
             try {
                 protocoloAtual = (int) input();
+                System.out.println("Protocolo = "+ protocoloAtual);
                 if (protocoloAtual == Protocolo.CADASTRAR_DOCUMENTO) {
                     String id = (String) input();
                     String login = (String) input();
@@ -129,6 +130,7 @@ public class ThreadTCP implements Runnable {
                     break;
                 } else if (protocoloAtual == Protocolo.CARREGAR_LISTA_DOCUMENTOS) {
                     String cpf = (String) input();
+                    
                     List<Documento> docs = new LinkedList();
                     for(int i = 0; i < Handler.usuarios.size(); i++){
                         if(cpf.equals(Handler.usuarios.get(i).getCpf())){
@@ -137,6 +139,12 @@ public class ThreadTCP implements Runnable {
                         }
                     }
                     output(docs);
+                }else if(protocoloAtual == Protocolo.DECODIFICAR_DOC){
+                    String texto = (String) input();
+                    System.out.println("recebeu decodificar");
+                    String textoDecod = han.decodificarTexto(texto);
+                    System.out.println("decodificado = " + textoDecod);
+                    output(textoDecod);
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Erro no protocolo recebido");

@@ -9,6 +9,8 @@ import cliente.Cliente;
 import cliente.Documento;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -20,25 +22,33 @@ public class BuscarDocumentos extends javax.swing.JFrame {
     /**
      * Creates new form BuscarDocumentos
      */
+    public static Documento docSelecionado;
     DefaultListModel modelo;
     List<Documento> docs;
     public static BuscarDocumentos buscarDocs;
+
     public BuscarDocumentos() throws IOException, ClassNotFoundException {
         initComponents();
         adicionarElementos();
     }
-    
+
     public void adicionarElementos() throws IOException, ClassNotFoundException {
         Cliente cliente = new Cliente();
+        cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
         cliente.carregarListaDocumentos(Login.loginCPF);
         docs = Cliente.docs;
         listaDocs.removeAll();
         modelo = new DefaultListModel();
-        for(int i = 0; i < docs.size(); i++){
-            modelo.addElement(docs.get(i).getId());
+        if (!docs.isEmpty()) {
+            for (int i = 0; i < docs.size(); i++) {
+                modelo.addElement(docs.get(i).getId());
+            }
         }
+        listaDocs.setModel(modelo);
+        cliente.sair();
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,10 +114,17 @@ public class BuscarDocumentos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void verActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verActionPerformed
+        docSelecionado = docs.get(listaDocs.getSelectedIndex());
+        try {
+            ExibirDocumento.exibirDoc = new ExibirDocumento();
+            this.setVisible(false);
+            ExibirDocumento.exibirDoc.setVisible(true);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(BuscarDocumentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_verActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

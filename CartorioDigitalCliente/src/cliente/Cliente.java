@@ -172,4 +172,11 @@ public class Cliente {
         output(cpf);
         docs = (List<Documento>) input();
     }
+    
+    public String decodificarTextoDoc(String texto) throws IOException, ClassNotFoundException{
+        output(Protocolo.DECODIFICAR_DOC);
+        output(texto);
+        String decod = (String) input();
+        return decod;
+    }
 }

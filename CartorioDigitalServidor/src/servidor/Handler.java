@@ -134,7 +134,7 @@ public class Handler {
     }
     
     public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException{
-        return criptografarSenha(senhaA).equals(criptografarSenha(senhaB));
+        return criptografarSenha(senhaA).equals(senhaB);
     }
     
     public String codificarTexto(String texto){
