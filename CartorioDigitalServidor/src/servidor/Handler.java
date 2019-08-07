@@ -7,6 +7,7 @@ package servidor;
 
 import cliente.Cidadao;
 import cliente.Documento;
+import cliente.Transferencia;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,46 +31,49 @@ public class Handler {
 
     public static Handler han;
     public static List<Cidadao> usuarios = new LinkedList<Cidadao>();
-    
+
     private Handler() {
 
     }
 
     public void cadastrarUsuario(String nome, String cpf, String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        
+
         Cidadao cid = new Cidadao(nome, cpf, criptografarSenha(senha));
         usuarios.add(cid);
-        if(usuarios.get(usuarios.size()-1).getDocumentos()==null){
-            usuarios.get(usuarios.size()-1).criarListaDocsVazia();
+        if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
+            usuarios.get(usuarios.size() - 1).criarListaDocsVazia();
         }
-        
+        if (usuarios.get(usuarios.size() - 1).getTransferencias() == null) {
+            usuarios.get(usuarios.size() - 1).criarListaTransfVazia();
+        }
+
         try {
             escreverArquivoSerial("dados\\usuarios", usuarios);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void cadastrarUsuario(Cidadao cid) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         usuarios.add(cid);
-        if(usuarios.get(usuarios.size()-1).getDocumentos()==null){
-            usuarios.get(usuarios.size()-1).criarListaDocsVazia();
+        if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
+            usuarios.get(usuarios.size() - 1).criarListaDocsVazia();
         }
-        
+
         try {
             escreverArquivoSerial("dados\\usuarios", usuarios);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public String cadastrarDocumento(Documento doc){
+
+    public String cadastrarDocumento(Documento doc) {
         String docCodificado = codificarTexto(doc.getTexto());
         doc.setTexto(docCodificado);
-        for(int i = 0; i < usuarios.size(); i++){
-            if(doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())){
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())) {
                 usuarios.get(i).getDocumentos().add(doc);
                 try {
                     escreverArquivoSerial("dados\\usuarios", usuarios);
@@ -77,12 +81,37 @@ public class Handler {
                 } catch (IOException ex) {
                     Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
         }
         return "Erro ao cadastrar documento";
     }
-    
+
+    public String cadastrarTransferencia(Transferencia transfer) {
+        String resultado = null;
+        boolean podeTransferir = true;
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (transfer.getCpf_comprador().equals(usuarios.get(i).getCpf())) {
+                for (int j = 0; j < usuarios.get(i).getTransferencias().size(); j++) {
+                    if (transfer.getDocumento().getId().equals(usuarios.get(i).getTransferencias().get(j).getDocumento().getId())) {
+                        podeTransferir = false;
+                        resultado = "Transferência ilegal.";
+                    }
+                }
+            }
+        }
+        if (podeTransferir) {
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (transfer.getCpf_comprador().equals(usuarios.get(i).getCpf())) {
+                    usuarios.get(i).getTransferencias().add(transfer);
+                    break;
+                }
+            }
+            resultado = "Transferência parcialmente feita\nAgora o comprador precisa confirmar.";
+        }
+        return resultado;
+    }
+
     public static Handler getInstance() {
         if (han == null) {
             han = new Handler();
@@ -120,30 +149,30 @@ public class Handler {
         }
 
     }
-    
-    public String criptografarSenha(String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+
+    public String criptografarSenha(String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
         byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
 
         StringBuilder hexString = new StringBuilder();
         for (byte b : messageDigest) {
-          hexString.append(String.format("%02X", 0xFF & b));
+            hexString.append(String.format("%02X", 0xFF & b));
         }
         String senhaCrip = hexString.toString();
         return senhaCrip;
     }
-    
-    public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+
+    public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return criptografarSenha(senhaA).equals(senhaB);
     }
-    
-    public String codificarTexto(String texto){
+
+    public String codificarTexto(String texto) {
         return Base64.encodeBase64String(texto.getBytes());
     }
-    
-    public String decodificarTexto(String texto){
+
+    public String decodificarTexto(String texto) {
         byte[] decoded = Base64.decodeBase64(texto.getBytes());
         return new String(decoded);
     }
-    
+
 }

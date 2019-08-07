@@ -7,20 +7,15 @@ package cliente;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.security.KeyStore;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
@@ -178,5 +173,14 @@ public class Cliente {
         output(texto);
         String decod = (String) input();
         return decod;
+    }
+    
+    public String enviarTransferencia(String cpfVend, String cpfComp, Documento doc, float valor) throws IOException, ClassNotFoundException{
+        output(Protocolo.TRANSFERIR_DOCUMENTO);
+        output(cpfVend+";"+cpfComp);
+        output(doc);
+        output(valor);
+        String resultado = (String) input();
+        return resultado;
     }
 }

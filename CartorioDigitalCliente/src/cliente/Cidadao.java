@@ -17,6 +17,7 @@ public class Cidadao implements Serializable{
     String cpf;
     String senha;
     LinkedList<Documento> documentos;
+    LinkedList<Transferencia> transferencias;
 
     public Cidadao(String nome, String cpf, String senha) {
         this.nome = nome;
@@ -56,6 +57,12 @@ public class Cidadao implements Serializable{
     public LinkedList<Documento> getDocumentos() {
         return documentos;
     }
+
+    public LinkedList<Transferencia> getTransferencias() {
+        return transferencias;
+    }
+    
+    
     
     @Override
     public String toString() {

@@ -8,6 +8,7 @@ package servidor;
 import cliente.Cidadao;
 import cliente.Documento;
 import cliente.Protocolo;
+import cliente.Transferencia;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +21,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -114,17 +117,28 @@ public class ThreadTCP implements Runnable {
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
                         if (cpf.equals(Handler.usuarios.get(i).getCpf())) {
                             if (han.verificarSenha(senha, Handler.usuarios.get(i).getSenha())) {
-                                output("Login efetuado com sucesso");
+                                output("Login efetuado com sucesso.");
                                 podeLogar = true;
                             }
                         }
                     }
                     if (!podeLogar) {
-                        output("Não foi encontrado nenhum usuário com esse CPF.");
+                        output("Erro ao logar, favor verificar senha e login.");
                     }
 
                 } else if (protocoloAtual == Protocolo.TRANSFERIR_DOCUMENTO) {
-
+                    String cpfs = (String) input();
+                    Documento doc = (Documento) input();
+                    float valorVenda = (float) input();
+                    String[] particionada;
+                    particionada = cpfs.split(";");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                    Date datax = new Date();
+                    String data = sdf.format(datax);
+                    Transferencia transf = new Transferencia(particionada[0], particionada[1], doc, data);
+                    String resultado = han.cadastrarTransferencia(transf);
+                    output(resultado);
+                    
                 } else if (protocoloAtual == Protocolo.SAIR) {
                     sair();
                     break;
