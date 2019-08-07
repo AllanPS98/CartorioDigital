@@ -34,8 +34,10 @@ public class MenuCidadao extends javax.swing.JFrame {
 
         cadastrarDocumentos = new javax.swing.JButton();
         verDocumentos = new javax.swing.JButton();
+        verTransferenciaRecebida = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu do Cidadão");
         setResizable(false);
 
         cadastrarDocumentos.setText("Cadastrar Documentos");
@@ -52,21 +54,31 @@ public class MenuCidadao extends javax.swing.JFrame {
             }
         });
 
+        verTransferenciaRecebida.setText("Ver Transferências Recebidas");
+        verTransferenciaRecebida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verTransferenciaRecebidaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(verDocumentos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(cadastrarDocumentos, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(verTransferenciaRecebida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addContainerGap()
                 .addComponent(verDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cadastrarDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(verTransferenciaRecebida, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -93,10 +105,17 @@ public class MenuCidadao extends javax.swing.JFrame {
         
     }//GEN-LAST:event_verDocumentosActionPerformed
 
+    private void verTransferenciaRecebidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTransferenciaRecebidaActionPerformed
+        TransferenciasRecebidas.transferenciasRecebidas = new TransferenciasRecebidas();
+        this.setVisible(false);
+        TransferenciasRecebidas.transferenciasRecebidas.setVisible(true);
+    }//GEN-LAST:event_verTransferenciaRecebidaActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cadastrarDocumentos;
     private javax.swing.JButton verDocumentos;
+    private javax.swing.JButton verTransferenciaRecebida;
     // End of variables declaration//GEN-END:variables
 }
