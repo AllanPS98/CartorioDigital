@@ -82,6 +82,11 @@ public class BuscarDocumentos extends javax.swing.JFrame {
         });
 
         voltar.setText("<");
+        voltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,6 +129,12 @@ public class BuscarDocumentos extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_verActionPerformed
+
+    private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
+        MenuCidadao.menucidadao = new MenuCidadao();
+        this.setVisible(false);
+        MenuCidadao.menucidadao.setVisible(true);
+    }//GEN-LAST:event_voltarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
