@@ -137,6 +137,10 @@ public class ThreadTCP implements Runnable {
                     String data = sdf.format(datax);
                     Transferencia transf = new Transferencia(particionada[0], particionada[1], doc, data);
                     String resultado = han.cadastrarTransferencia(transf);
+                    if(resultado.equals("Transferência parcialmente feita\nAgora o comprador precisa confirmar.")){
+                        MulticastSender sender = new MulticastSender();
+                        sender.outputTrnasferencia(transf.toString());
+                    }
                     output(resultado);
                     
                 } else if (protocoloAtual == Protocolo.SAIR) {
