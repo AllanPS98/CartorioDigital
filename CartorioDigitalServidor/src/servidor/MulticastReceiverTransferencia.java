@@ -56,7 +56,7 @@ public class MulticastReceiverTransferencia implements Runnable{
         Transferencia transfer = new Transferencia(particionada[0], particionada[1], doc, particionada[3]);
         return transfer;
     }
-    //cpf_vendedor + ";" + cpf_comprador + ";" + documento.toString() + ";" + data + ";";
+    
     
     private Documento transformaDocumentoEmObjeto(String doc){
         String[] particionada = doc.split(";");
