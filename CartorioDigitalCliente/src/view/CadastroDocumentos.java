@@ -133,6 +133,7 @@ public class CadastroDocumentos extends javax.swing.JFrame {
             }else{
                 //cadastro feito: implementar ação
                 JOptionPane.showMessageDialog(null, resultado + "\nVerifique na sua lista de documentos.");
+                MenuCidadao.menucidadao = new MenuCidadao();
                 this.setVisible(false);
                 MenuCidadao.menucidadao.setVisible(true);
             }

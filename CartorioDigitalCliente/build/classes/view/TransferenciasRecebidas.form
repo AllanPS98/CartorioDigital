@@ -62,16 +62,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="voltarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="aceitar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Aceitar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aceitarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="recusar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Recusar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recusarActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

@@ -31,6 +31,7 @@ public class Cliente {
     SSLSocket cliente;
     SSLSocketFactory factory;
     public static List<Documento> docs;
+    public static List<Transferencia> transfs;
 
     public void cliente(String ip, int porta) throws IOException {
         
@@ -180,6 +181,19 @@ public class Cliente {
         output(cpfVend+";"+cpfComp);
         output(doc);
         output(valor);
+        String resultado = (String) input();
+        return resultado;
+    }
+    
+    public void carregarListaTransf(String cpf) throws IOException, ClassNotFoundException{
+        output(Protocolo.CARREGAR_LISTA_TRANSF);
+        output(cpf);
+        transfs = (List<Transferencia>) input();
+    }
+    
+    public String recusarTransferencia(Transferencia transf) throws IOException, ClassNotFoundException{
+        output(Protocolo.RECUSAR_TRANSF);
+        output(transf);
         String resultado = (String) input();
         return resultado;
     }

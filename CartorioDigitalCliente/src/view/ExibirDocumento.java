@@ -8,6 +8,8 @@ package view;
 import cliente.Cliente;
 import cliente.Documento;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -72,6 +74,11 @@ public class ExibirDocumento extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textoDocumento);
 
         voltar.setText("<");
+        voltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarActionPerformed(evt);
+            }
+        });
 
         transferir.setText("Transferir");
         transferir.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +140,20 @@ public class ExibirDocumento extends javax.swing.JFrame {
         this.setVisible(false);
         TransferenciaDocumentos.telaTransferencia.setVisible(true);
     }//GEN-LAST:event_transferirActionPerformed
+
+    private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
+        try {
+            BuscarDocumentos.buscarDocs = new BuscarDocumentos();
+            this.setVisible(false);
+            BuscarDocumentos.buscarDocs.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(ExibirDocumento.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ExibirDocumento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_voltarActionPerformed
 
     
 

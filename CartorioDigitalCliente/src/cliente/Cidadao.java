@@ -18,16 +18,11 @@ public class Cidadao implements Serializable{
     String senha;
     LinkedList<Documento> documentos;
     LinkedList<Transferencia> transferencias;
-
+    
     public Cidadao(String nome, String cpf, String senha) {
         this.nome = nome;
         this.cpf = cpf;
-        
         this.senha = senha;
-    }
-
-    Cidadao() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getNome() {
@@ -58,14 +53,23 @@ public class Cidadao implements Serializable{
         return documentos;
     }
 
+    public void criarListaDocsVazia() {
+        this.documentos = new LinkedList<>();
+    }
+
     public LinkedList<Transferencia> getTransferencias() {
         return transferencias;
     }
     
-    
-    
+    public void criarListaTransfVazia(){
+        this.transferencias = new LinkedList();
+    }
+
     @Override
     public String toString() {
         return nome+";"+cpf+";"+senha+";";
     }
+    
+    
+    
 }

@@ -12,7 +12,6 @@ import cliente.Transferencia;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -25,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -163,6 +161,22 @@ public class ThreadTCP implements Runnable {
                     String textoDecod = han.decodificarTexto(texto);
                     System.out.println("decodificado = " + textoDecod);
                     output(textoDecod);
+                }
+                else if(protocoloAtual == Protocolo.CARREGAR_LISTA_TRANSF){
+                    String cpf = (String) input();
+                    List<Transferencia> transf = new LinkedList();
+                    for(int i = 0; i < Handler.usuarios.size(); i++){
+                        if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                            transf = Handler.usuarios.get(i).getTransferencias();
+                            break;
+                        }
+                    }
+                    output(transf);
+                }
+                else if(protocoloAtual == Protocolo.RECUSAR_TRANSF){
+                    Transferencia transf = (Transferencia) input();
+                    String resultado = han.recusarTransferencia(transf);
+                    output(resultado);
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Erro no protocolo recebido");

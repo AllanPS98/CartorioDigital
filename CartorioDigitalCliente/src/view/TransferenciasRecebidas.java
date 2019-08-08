@@ -5,6 +5,15 @@
  */
 package view;
 
+import cliente.Cliente;
+import cliente.Transferencia;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author User
@@ -14,9 +23,28 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
     /**
      * Creates new form TransferenciasRecebidas
      */
+    Transferencia transferenciaSelecionada;
+    DefaultListModel modelo;
+    List<Transferencia> transfs;
     public static TransferenciasRecebidas transferenciasRecebidas;
     public TransferenciasRecebidas() {
         initComponents();
+    }
+    public void adicionarElementos() throws IOException, ClassNotFoundException {
+        Cliente cliente = new Cliente();
+        cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
+        cliente.carregarListaTransf(Login.loginCPF);
+        transfs = Cliente.transfs;
+        listaTransferenciasRecebidas.removeAll();
+        modelo = new DefaultListModel();
+        if (!transfs.isEmpty()) {
+            for (int i = 0; i < transfs.size(); i++) {
+                modelo.addElement(transfs.get(i).getDocumento().getId());
+            }
+        }
+        listaTransferenciasRecebidas.setModel(modelo);
+        cliente.sair();
+
     }
 
     /**
@@ -39,10 +67,25 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         setResizable(false);
 
         voltar.setText("<");
+        voltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarActionPerformed(evt);
+            }
+        });
 
         aceitar.setText("Aceitar");
+        aceitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceitarActionPerformed(evt);
+            }
+        });
 
         recusar.setText("Recusar");
+        recusar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recusarActionPerformed(evt);
+            }
+        });
 
         listaTransferenciasRecebidas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -84,40 +127,47 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void aceitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceitarActionPerformed
+        Cliente cliente = new Cliente();
+        transferenciaSelecionada = transfs.get(listaTransferenciasRecebidas.getSelectedIndex());
+        String[] ids;
+        ids = transferenciaSelecionada.getDocumento().getId().split("/");
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
+            String resultado = cliente.cadastrarDocumento(Login.loginCPF,transferenciaSelecionada.getDocumento().getTexto(), ids[0], ids[1]);
+            if(!resultado.equals("Cadastro efetuado com sucesso")){
+                JOptionPane.showMessageDialog(null, resultado);
+            }else{
+                
+                JOptionPane.showMessageDialog(null, resultado + "\nVerifique na sua lista de documentos.");
+                MenuCidadao.menucidadao = new MenuCidadao();
+                this.setVisible(false);
+                MenuCidadao.menucidadao.setVisible(true);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TransferenciasRecebidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TransferenciasRecebidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TransferenciasRecebidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TransferenciasRecebidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CadastroDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        cliente.sair();
+    }//GEN-LAST:event_aceitarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TransferenciasRecebidas().setVisible(true);
-            }
-        });
-    }
+    private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
+        MenuCidadao.menucidadao = new MenuCidadao();
+        this.setVisible(false);
+        MenuCidadao.menucidadao.setVisible(true);
+    }//GEN-LAST:event_voltarActionPerformed
+
+    private void recusarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recusarActionPerformed
+        Cliente cliente = new Cliente();
+        try {
+            cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
+            String resultado = cliente.recusarTransferencia(transferenciaSelecionada);
+        } catch (IOException ex) {
+            Logger.getLogger(TransferenciasRecebidas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        cliente.sair();
+    }//GEN-LAST:event_recusarActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceitar;

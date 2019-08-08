@@ -111,6 +111,11 @@ public class Handler {
         }
         return resultado;
     }
+    
+    public String recusarTransferencia(Transferencia transf){
+        
+        return null;
+    }
 
     public static Handler getInstance() {
         if (han == null) {
