@@ -161,7 +161,7 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
             String resultado = cliente.recusarTransferencia(transferenciaSelecionada);
-        } catch (IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(TransferenciasRecebidas.class.getName()).log(Level.SEVERE, null, ex);
         }
         cliente.sair();
