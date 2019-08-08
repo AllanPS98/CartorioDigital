@@ -23,6 +23,10 @@ public class Transferencia implements Serializable{
         this.documento = documento;
         this.data = data;
     }
+    
+    public Transferencia() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     public String getCpf_vendedor() {
         return cpf_vendedor;
