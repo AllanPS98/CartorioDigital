@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author karol
+ * @author Allan Pereira da Silva
  */
 public class MenuCidadao extends javax.swing.JFrame {
 

@@ -32,19 +32,25 @@ public class Cliente {
     SSLSocketFactory factory;
     public static List<Documento> docs;
     public static List<Transferencia> transfs;
-
+    
+    /**
+     * Criação do cliente no padrão SSL/TLS de comunicação
+     * @param ip
+     * @param porta
+     * @throws IOException 
+     */
     public void cliente(String ip, int porta) throws IOException {
-        
         factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         cliente = (SSLSocket) factory.createSocket(ip, porta);
         //cliente.startHandshake();
         out = new ObjectOutputStream(cliente.getOutputStream());
         in = new ObjectInputStream(cliente.getInputStream());
         System.out.println("CLIENTE CONECTADO");
-
     }
     
-    
+    /**
+     * Método que invoca o protocolo sair, para dizer ao servidor que será desconectado
+     */
     public void sair() {
         try {
             System.out.println("entrou no sair");
@@ -58,6 +64,11 @@ public class Cliente {
         System.out.println("CLIENTE DESCONECTADO !!!!!");
     }
     
+    /**
+     * Método recebe um array de bytes e transforma em objeto
+     * @param data
+     * @return 
+     */
     private Object desserializarMensagem(byte[] data) {
         ByteArrayInputStream mensagem = new ByteArrayInputStream(data);
 
@@ -71,7 +82,11 @@ public class Cliente {
 
         return null;
     }
-
+    /**
+     * Método recebe um objeto e o transforma em um array de bytes
+     * @param mensagem
+     * @return 
+     */
     public byte[] serializarMensagens(Object mensagem) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         try {
@@ -86,12 +101,22 @@ public class Cliente {
 
     }
     
+    /**
+     * Método responsável por enviar outputs ao servidor
+     * @param msg
+     * @throws IOException 
+     */
     public void output(Object msg) throws IOException {
         out.flush();
         out.write(serializarMensagens(msg));
         out.reset();
     }
-
+    /**
+     * Método responsável por receber mensagens do servidor
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public Object input() throws IOException, ClassNotFoundException {
         try {
             InputStream tcpInput = new ObjectInputStream(in);
@@ -114,7 +139,12 @@ public class Cliente {
     }
     
     
-    
+    /**
+     * Método que recebe os parâmetros necessários para fazer um login de um usuário e faz o pedido ao servidor
+     * @param cpf
+     * @param senha
+     * @return 
+     */
     public String login(String cpf, String senha){
         String resultado = "";
         try {
@@ -135,7 +165,16 @@ public class Cliente {
         return resultado;
         
     }
-    
+    /**
+     * Método responsável por pedir ao servidor para cadastrar um usuário
+     * @param nome
+     * @param cpf
+     * @param senha
+     * @param confirmaSenha
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public String cadastrarSe(String nome, String cpf, String senha, String confirmaSenha) throws IOException, ClassNotFoundException{
         output(Protocolo.CADASTRAR_USUARIO);
         output(nome);
@@ -145,7 +184,15 @@ public class Cliente {
         String resultado = (String) input();
         return resultado;
     }
-
+    /**
+     * Método responsável por pedir ao servidor para fazer o cadastro de um documento
+     * @param loginAux
+     * @param text
+     * @param latitude
+     * @param longitude
+     * @param valor
+     * @return 
+     */
     public String cadastrarDocumento(String loginAux, String text, String latitude, String longitude, String valor) {
         String resultado = "";
         try {
@@ -164,20 +211,40 @@ public class Cliente {
         
         return resultado;
     }
-    
+    /**
+     * Método responsável por solicitar ao servidor uma lista de documentos do usuário logado
+     * @param cpf
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public void carregarListaDocumentos(String cpf) throws IOException, ClassNotFoundException{
         output(Protocolo.CARREGAR_LISTA_DOCUMENTOS);
         output(cpf);
         docs = (List<Documento>) input();
     }
-    
+    /**
+     * Método que requisita que o servidor decodifique uma mensagem
+     * @param texto
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public String decodificarTextoDoc(String texto) throws IOException, ClassNotFoundException{
         output(Protocolo.DECODIFICAR_DOC);
         output(texto);
         String decod = (String) input();
         return decod;
     }
-    
+    /**
+     * Método que pede para o servidor fazer uma transferência de documento
+     * @param cpfVend
+     * @param cpfComp
+     * @param doc
+     * @param valor
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public String enviarTransferencia(String cpfVend, String cpfComp, Documento doc, float valor) throws IOException, ClassNotFoundException{
         output(Protocolo.TRANSFERIR_DOCUMENTO);
         output(cpfVend+";"+cpfComp);
@@ -186,13 +253,24 @@ public class Cliente {
         String resultado = (String) input();
         return resultado;
     }
-    
+    /**
+     * Método que solicita ao servidor uma lista de transferências
+     * @param cpf
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public void carregarListaTransf(String cpf) throws IOException, ClassNotFoundException{
         output(Protocolo.CARREGAR_LISTA_TRANSF);
         output(cpf);
         transfs = (List<Transferencia>) input();
     }
-    
+    /**
+     * Método responsável por enviar um sinal de "recusar transferência" ao servidor
+     * @param transf
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public String recusarTransferencia(Transferencia transf) throws IOException, ClassNotFoundException{
         output(Protocolo.RECUSAR_TRANSF);
         output(transf);

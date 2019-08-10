@@ -5,14 +5,9 @@
  */
 package view;
 
-import cliente.Cliente;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class TelaInicial extends javax.swing.JFrame {
 

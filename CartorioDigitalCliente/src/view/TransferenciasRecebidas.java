@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class TransferenciasRecebidas extends javax.swing.JFrame {
 

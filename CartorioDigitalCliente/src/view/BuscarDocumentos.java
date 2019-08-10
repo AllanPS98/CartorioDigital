@@ -15,7 +15,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class BuscarDocumentos extends javax.swing.JFrame {
 

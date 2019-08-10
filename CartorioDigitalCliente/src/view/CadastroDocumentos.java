@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class CadastroDocumentos extends javax.swing.JFrame {
 

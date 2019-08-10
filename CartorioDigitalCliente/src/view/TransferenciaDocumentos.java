@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class TransferenciaDocumentos extends javax.swing.JFrame {
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Transferencia implements Serializable{
     String cpf_vendedor;

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class ExibirDocumento extends javax.swing.JFrame {
 
