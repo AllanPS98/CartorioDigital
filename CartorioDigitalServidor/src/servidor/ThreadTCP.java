@@ -50,7 +50,6 @@ public class ThreadTCP implements Runnable {
     public void run() {
         int protocoloAtual;
         while (true) {
-
             try {
                 protocoloAtual = (int) input();
                 System.out.println("Protocolo = "+ protocoloAtual);
@@ -106,9 +105,9 @@ public class ThreadTCP implements Runnable {
                         output("Cadastro efetuado com sucesso");
                     }
                 } else if (protocoloAtual == Protocolo.LOGIN) {
-                    carregarDados();
                     String cpf = (String) input();
                     String senha = (String) input();
+                    carregarDados();
                     boolean podeLogar = false;
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
                         if (cpf.equals(Handler.usuarios.get(i).getCpf())) {

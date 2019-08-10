@@ -25,7 +25,6 @@ public class Transferencia implements Serializable{
     }
     
     public Transferencia() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getCpf_vendedor() {
