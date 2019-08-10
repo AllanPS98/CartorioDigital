@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Cidadao implements Serializable{
     String nome;

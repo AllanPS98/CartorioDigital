@@ -6,20 +6,17 @@
 package servidor;
 
 import cliente.Cidadao;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class MulticastReceiverCidadao implements Runnable {
 
@@ -34,16 +31,17 @@ public class MulticastReceiverCidadao implements Runnable {
         InetAddress grupo;
         MulticastSocket multi;
         try {
-            grupo = InetAddress.getByName("225.4.5.6");
-            multi = new MulticastSocket(3456);
-            multi.joinGroup(grupo);
-            byte[] buff = new byte[1000];
-            DatagramPacket pkt = new DatagramPacket(buff, buff.length);
+            grupo = InetAddress.getByName("225.4.5.6"); // definindo o IP do grupo
+            multi = new MulticastSocket(3456); // e a porta
+            multi.joinGroup(grupo); // entra no grupo
+            byte[] buff = new byte[1000]; // crio um vetor de 1000 bytes
+            DatagramPacket pkt = new DatagramPacket(buff, buff.length); // crio o pacote a ser recebido
             while (true) {
-                multi.receive(pkt);
-                String cidadao = new String(buff);
-                Cidadao cid = transformaCidadaoEmObjeto(cidadao);
+                multi.receive(pkt); // recebo o pacote
+                String cidadao = new String(buff); // transformo os bytes recebidos em string
+                Cidadao cid = transformaCidadaoEmObjeto(cidadao); // transformo a string em objeto
                 //ThreadTCP.carregarDados();
+                // cadastro o cidadão (ou não)
                 boolean naoPodeCadastrar = false;
                 for (int i = 0; i < Handler.usuarios.size(); i++) {
                     System.out.println(Handler.usuarios.get(i).toString());
@@ -62,7 +60,11 @@ public class MulticastReceiverCidadao implements Runnable {
         }
 
     }
-
+    /**
+     * Recebe uma string e transforma em um objeto Cidadão
+     * @param cidadao
+     * @return 
+     */
     public Cidadao transformaCidadaoEmObjeto(String cidadao) {
         String[] particionada;
         particionada = cidadao.split(";");

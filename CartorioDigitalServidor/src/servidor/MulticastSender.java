@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class MulticastSender {
 
@@ -22,7 +22,12 @@ public class MulticastSender {
     }
     
     
-    
+    /**
+     * Manda uma mensagem multicast para o grupo de servidores cidadão
+     * @param msg
+     * @throws UnknownHostException
+     * @throws IOException 
+     */
     public void outputCidadao(String msg) throws UnknownHostException, IOException{
         InetAddress grupo = InetAddress.getByName("225.4.5.6");
         MulticastSocket multi = new MulticastSocket();
@@ -30,7 +35,12 @@ public class MulticastSender {
         multi.send(pkt);
         multi.close();
     }
-    
+    /**
+     * Manda uma mensagem multicast para o grupo de servidores documento
+     * @param msg
+     * @throws UnknownHostException
+     * @throws IOException 
+     */
     public void outputDocumento(String msg) throws UnknownHostException, IOException{
         InetAddress grupo = InetAddress.getByName("225.4.5.7");
         MulticastSocket multi = new MulticastSocket();
@@ -38,7 +48,12 @@ public class MulticastSender {
         multi.send(pkt);
         multi.close();
     }
-    
+    /**
+     * Manda uma mensagem multicast para o grupo de servidores transferência
+     * @param msg
+     * @throws UnknownHostException
+     * @throws IOException 
+     */
     public void outputTransferencia(String msg) throws UnknownHostException, IOException{
         InetAddress grupo = InetAddress.getByName("225.4.5.8");
         MulticastSocket multi = new MulticastSocket();

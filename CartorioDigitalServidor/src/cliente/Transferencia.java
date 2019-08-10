@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Transferencia implements Serializable{
     String cpf_vendedor;
@@ -67,10 +67,7 @@ public class Transferencia implements Serializable{
 
     public void setValorVenda(float valorVenda) {
         this.valorVenda = valorVenda;
-    }
-    
-    
-    
+    }    
 
     @Override
     public String toString() {

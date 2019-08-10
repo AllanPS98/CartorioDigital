@@ -90,8 +90,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        this.ipAux = ip.getText();
-        this.portaAux = Integer.parseInt(porta.getText());
+        TelaInicial.ipAux = ip.getText();
+        TelaInicial.portaAux = Integer.parseInt(porta.getText());
         this.setVisible(false);
         Login.telaLogin = new Login();
         Login.telaLogin.setVisible(true);

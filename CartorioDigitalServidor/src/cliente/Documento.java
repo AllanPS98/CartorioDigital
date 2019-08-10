@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Documento implements Serializable{
     String id;

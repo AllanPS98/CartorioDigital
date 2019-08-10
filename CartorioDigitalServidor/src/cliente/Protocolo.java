@@ -7,7 +7,7 @@ package cliente;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Protocolo {
     public static int SAIR = 1;

@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author allan
+ * @author Allan Pereira da Silva
  */
 public class ThreadTCP implements Runnable {
 
@@ -38,7 +38,7 @@ public class ThreadTCP implements Runnable {
     private final ObjectOutputStream out;
     private static final String path = "dados\\usuarios";
     private static Handler han;
-
+    
     ThreadTCP(Socket cliente, ObjectInputStream in, ObjectOutputStream out, Handler han) {
         this.cliente = cliente;
         this.in = in;
@@ -51,7 +51,7 @@ public class ThreadTCP implements Runnable {
         int protocoloAtual;
         while (true) {
             try {
-                protocoloAtual = (int) input();
+                protocoloAtual = (int) input(); //recebe o protocolo
                 System.out.println("Protocolo = "+ protocoloAtual);
                 if (protocoloAtual == Protocolo.CADASTRAR_DOCUMENTO) {
                     carregarDados();
@@ -61,6 +61,7 @@ public class ThreadTCP implements Runnable {
                     float valorDoc = (float) input();
                     boolean achou = false;
                     boolean podeCadastrar = true;
+                    // verifica se pode cadastrar o documento
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
                         if (login.equals(Handler.usuarios.get(i).getCpf())) {
                             for (int j = 0; j < Handler.usuarios.get(i).getDocumentos().size(); j++) {
@@ -89,6 +90,7 @@ public class ThreadTCP implements Runnable {
                     String senha = (String) input();
                     String confirmaSenha = (String) input();
                     boolean cpfIgual = false;
+                    //verifica se pode cadastrar o usuário
                     if (senha.equals(confirmaSenha)) {
                         for (int i = 0; i < Handler.usuarios.size(); i++) {
                             if (cpf.equals(Handler.usuarios.get(i).getCpf())) {
@@ -110,6 +112,7 @@ public class ThreadTCP implements Runnable {
                     String senha = (String) input();
                     carregarDados();
                     boolean podeLogar = false;
+                    //verifica se pode logar
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
                         if (cpf.equals(Handler.usuarios.get(i).getCpf())) {
                             if (han.verificarSenha(senha, Handler.usuarios.get(i).getSenha())) {
@@ -124,6 +127,7 @@ public class ThreadTCP implements Runnable {
 
                 } else if (protocoloAtual == Protocolo.TRANSFERIR_DOCUMENTO) {
                     carregarDados();
+                    // transfere um documento para outro usuário
                     String cpfs = (String) input();
                     Documento doc = (Documento) input();
                     float valorVenda = (float) input();
@@ -146,6 +150,7 @@ public class ThreadTCP implements Runnable {
                 } else if (protocoloAtual == Protocolo.CARREGAR_LISTA_DOCUMENTOS) {
                     String cpf = (String) input();
                     carregarDados();
+                    //devolve uma lista de documentos para o cliente
                     List<Documento> docs = new LinkedList();
                     for(int i = 0; i < Handler.usuarios.size(); i++){
                         if(cpf.equals(Handler.usuarios.get(i).getCpf())){
@@ -157,6 +162,7 @@ public class ThreadTCP implements Runnable {
                 }else if(protocoloAtual == Protocolo.DECODIFICAR_DOC){
                     carregarDados();
                     String texto = (String) input();
+                    //decodifica um texto
                     String textoDecod = han.decodificarTexto(texto);
                     System.out.println("decodificado = " + textoDecod);
                     output(textoDecod);
@@ -164,6 +170,7 @@ public class ThreadTCP implements Runnable {
                 else if(protocoloAtual == Protocolo.CARREGAR_LISTA_TRANSF){
                     String cpf = (String) input();
                     carregarDados();
+                    //devolve uma lista de transferências para o cliente
                     List<Transferencia> transf = new LinkedList();
                     for(int i = 0; i < Handler.usuarios.size(); i++){
                         if(cpf.equals(Handler.usuarios.get(i).getCpf())){
@@ -176,6 +183,7 @@ public class ThreadTCP implements Runnable {
                 }
                 else if(protocoloAtual == Protocolo.RECUSAR_TRANSF){
                     carregarDados();
+                    //recusa uma transferência vinda de outro usuário
                     Transferencia transf = (Transferencia) input();
                     String resultado = han.recusarTransferencia(transf);
                     output(resultado);
@@ -188,11 +196,15 @@ public class ThreadTCP implements Runnable {
 
         }
     }
-
+    /**
+     * Método responsável por receber mensagens do cliente
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public Object input() throws IOException, ClassNotFoundException {
 
         try {
-
             InputStream tcpInput = new ObjectInputStream(in);
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -213,7 +225,11 @@ public class ThreadTCP implements Runnable {
         }
         return null;
     }
-
+    /**
+     * Método responsável por enviar outputs ao cliente
+     * @param msg
+     * @throws IOException 
+     */
     public void output(Object msg) throws IOException {
         out.flush();
         out.write(serializarMensagens(msg));
@@ -226,7 +242,11 @@ public class ThreadTCP implements Runnable {
         cliente.close();
         System.out.println("CLIENTE DESCONECTOU");
     }
-
+    /**
+     * Método recebe um objeto e o transforma em um array de bytes
+     * @param mensagem
+     * @return 
+     */
     public byte[] serializarMensagens(Object mensagem) {
         ByteArrayOutputStream by = new ByteArrayOutputStream();
         try {
@@ -239,7 +259,11 @@ public class ThreadTCP implements Runnable {
         }
         return null;
     }
-
+    /**
+     * Método recebe um array de bytes e transforma em objeto
+     * @param data
+     * @return 
+     */
     public Object desserializarMensagem(byte[] data) throws IOException, ClassNotFoundException {
         ByteArrayInputStream mensagem = new ByteArrayInputStream(data);
 
@@ -247,7 +271,12 @@ public class ThreadTCP implements Runnable {
         return (Object) leitor.readObject();
 
     }
-
+    /**
+     * Carrega todos os dados armazenados
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws ClassNotFoundException 
+     */
     public static void carregarDados() throws IOException, FileNotFoundException, ClassNotFoundException {
         han.lerArquivoSerial(path);
     }

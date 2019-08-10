@@ -25,7 +25,7 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  *
- * @author User
+ * @author Allan Pereira da Silva
  */
 public class Handler {
 
@@ -36,13 +36,22 @@ public class Handler {
     private Handler() {
 
     }
-
+    /**
+     * Método que cadastra um usuário
+     * @param nome
+     * @param cpf
+     * @param senha
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     public void cadastrarUsuario(String nome, String cpf, String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Cidadao cid = new Cidadao(nome, cpf, criptografarSenha(senha));
         usuarios.add(cid);
+        // verifico se a lista de documentos dele/dela é vazia e então crio uma
         if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
             usuarios.get(usuarios.size() - 1).criarListaDocsVazia();
         }
+        // verifico se a lista de transferências dele/dela é vazia e então crio uma
         if (usuarios.get(usuarios.size() - 1).getTransferencias() == null) {
             usuarios.get(usuarios.size() - 1).criarListaTransfVazia();
         }
@@ -53,7 +62,13 @@ public class Handler {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Método responsável por cadastrar um cidadão recebendo um objeto cidadão
+     * @param cid
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     public void cadastrarUsuario(Cidadao cid) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         usuarios.add(cid);
         if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
@@ -69,13 +84,18 @@ public class Handler {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Método responsável por cadastrar um documento
+     * @param doc
+     * @return 
+     */
     public String cadastrarDocumento(Documento doc) {
+        //codifico o campo do texto do documento antes de salvá-lo
         String docCodificado = codificarTexto(doc.getTexto());
         doc.setTexto(docCodificado);
         for (int i = 0; i < usuarios.size(); i++) {
-            if (doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())) {
-                usuarios.get(i).getDocumentos().add(doc);
+            if (doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())) { // se existe algum usuário com o mesmo cpf
+                usuarios.get(i).getDocumentos().add(doc);                     // adicione o documento nesse usuário
                 try {
                     escreverArquivoSerial(PATH, usuarios);
                     return "Documento cadastrado com sucesso";
@@ -87,7 +107,12 @@ public class Handler {
         }
         return "Erro ao cadastrar documento";
     }
-
+    /**
+     * Método que cadastra uma transferência e manda o documento para o usuário que será (ou não) o comprador
+     * @param transfer
+     * @return
+     * @throws IOException 
+     */
     public String cadastrarTransferencia(Transferencia transfer) throws IOException {
         String resultado = null;
         boolean podeTransferir = true;
@@ -122,7 +147,12 @@ public class Handler {
         escreverArquivoSerial(PATH, usuarios);
         return resultado;
     }
-
+    /**
+     * Método que recusa um transferência, ou seja, envia de volta para o usuário vendedor o documento
+     * @param transf
+     * @return
+     * @throws IOException 
+     */
     public String recusarTransferencia(Transferencia transf) throws IOException {
         Documento docRejeitado;
         Transferencia transfRejeitada = new Transferencia();
@@ -145,14 +175,23 @@ public class Handler {
         escreverArquivoSerial(PATH, usuarios);
         return "Transferência rejeitada.";
     }
-
+    /**
+     * Singleton 
+     * @return 
+     */
     public static Handler getInstance() {
         if (han == null) {
             han = new Handler();
         }
         return han;
     }
-
+    /**
+     * Método que armazena os dados em um arquivo
+     * @param nome
+     * @param obj
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     private void escreverArquivoSerial(String nome, Object obj) throws FileNotFoundException, IOException {
         //Classe responsavel por inserir os objetos
         try (FileOutputStream arquivo = new FileOutputStream(nome)) {
@@ -166,7 +205,13 @@ public class Handler {
             arquivo.flush();
         }
     }
-
+    /**
+     * Método que ler os dados do arquivo
+     * @param nome
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public void lerArquivoSerial(String nome) throws FileNotFoundException, IOException, ClassNotFoundException {
         Object obj;
         try {
@@ -183,7 +228,13 @@ public class Handler {
         }
 
     }
-
+    /**
+     * Método que criptografa uma senha usando SHA-256
+     * @param senha
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     public String criptografarSenha(String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
         byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
@@ -195,15 +246,30 @@ public class Handler {
         String senhaCrip = hexString.toString();
         return senhaCrip;
     }
-
+    /**
+     * Método que verifica se a criptografia de uma senha é igual a senha criptografada que está armazenada no arquivo
+     * @param senhaA
+     * @param senhaB
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     public boolean verificarSenha(String senhaA, String senhaB) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return criptografarSenha(senhaA).equals(senhaB);
     }
-
+    /**
+     * Método que usa o Base64 do apache commons codec pra codificar um texto
+     * @param texto
+     * @return 
+     */
     public String codificarTexto(String texto) {
         return Base64.encodeBase64String(texto.getBytes());
     }
-
+    /**
+     * Método que usa o Base64 do apache commons codec pra decodificar um texto
+     * @param texto
+     * @return 
+     */
     public String decodificarTexto(String texto) {
         byte[] decoded = Base64.decodeBase64(texto.getBytes());
         return new String(decoded);

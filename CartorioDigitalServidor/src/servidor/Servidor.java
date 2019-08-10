@@ -9,30 +9,27 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.BindException;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
 /**
  *
- * @author allan
+ * @author Allan Pereira da Silva
  */
 public class Servidor {
-    private static final String nomepathWindowsKey = "ssl\\servidorCartorio.key";
-    private static final String nomepathWindowsTrust = "ssl\\servidorCartorioTrustStore.key";
-    private static final String nomepathLinuxKey = "ssl//servidorCartorio.key";
-    private static final String nomepathLinuxTrust = "ssl//servidorCartorioTrustStore.key";
+    private static final String NOME_PATH_KEY = "ssl\\servidorCartorio.key";
+    private static final String NOME_PATH_TRUST = "ssl\\servidorCartorioTrustStore.key";
+    
     private static int PORTATCP = 12345;
     private static int PORTAUDP = 3456;
     static Handler han = Handler.getInstance();
 
     public static void main(String[] args) throws IOException {
         //System.setProperty("javax.net.debug", "all");
-        System.setProperty("javax.net.ssl.keyStore", nomepathWindowsKey);
+        System.setProperty("javax.net.ssl.keyStore", NOME_PATH_KEY);
         System.setProperty("javax.net.ssl.keyStorePassword", "allanpereira11");
-        System.setProperty("javax.net.ssl.trustStore", nomepathWindowsTrust);
+        System.setProperty("javax.net.ssl.trustStore", NOME_PATH_TRUST);
         System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         ouvirTCP();
         ouvirUDPCidadao();
