@@ -26,6 +26,7 @@ public class ExibirDocumento extends javax.swing.JFrame {
         Documento doc = BuscarDocumentos.docSelecionado;
         this.nomeProprietario.setText(doc.getProprietario()); 
         this.numeroCPF.setText(doc.getCpf_proprietario());
+        this.valor.setText(String.valueOf(doc.getValorDoc()));
         Cliente cliente = new Cliente();
         cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
         System.out.println("iniciou cliente");
@@ -52,6 +53,8 @@ public class ExibirDocumento extends javax.swing.JFrame {
         textoDocumento = new javax.swing.JTextPane();
         voltar = new javax.swing.JButton();
         transferir = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        valor = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Exibição de Documento");
@@ -87,6 +90,10 @@ public class ExibirDocumento extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("R$:");
+
+        valor.setText("(Valor)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,21 +101,25 @@ public class ExibirDocumento extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(valor))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(numeroCPF))
                     .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(nomeProprietario)
-                        .addGap(49, 49, 49)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(numeroCPF))
+                        .addComponent(nomeProprietario))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(voltar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(transferir))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -117,14 +128,20 @@ public class ExibirDocumento extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(nomeProprietario)
+                    .addComponent(nomeProprietario))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(numeroCPF))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(valor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(voltar)
                     .addComponent(transferir))
@@ -161,11 +178,13 @@ public class ExibirDocumento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel nomeProprietario;
     private javax.swing.JLabel numeroCPF;
     private javax.swing.JTextPane textoDocumento;
     private javax.swing.JButton transferir;
+    private javax.swing.JLabel valor;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
 }

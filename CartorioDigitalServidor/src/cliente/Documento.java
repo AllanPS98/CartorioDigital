@@ -23,12 +23,14 @@ public class Documento implements Serializable{
     String cpf_proprietario;
     String texto;
     Date data;
+    float valorDoc;
 
-    public Documento(String id, String proprietario, String cpf_proprietario, String texto) {
+    public Documento(String id, String proprietario, String cpf_proprietario, String texto, float valorDoc) {
         this.id = id;
         this.proprietario = proprietario;
         this.cpf_proprietario = cpf_proprietario;
         this.texto = texto;
+        this.valorDoc = valorDoc;
     }
 
 
@@ -64,9 +66,27 @@ public class Documento implements Serializable{
         this.texto = texto;
     }
 
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public float getValorDoc() {
+        return valorDoc;
+    }
+
+    public void setValorDoc(float valorDoc) {
+        this.valorDoc = valorDoc;
+    }
+    
+    
+    
     @Override
     public String toString() {
-        return id + ";" + proprietario + ";" + cpf_proprietario + ";" + texto + ";" + data + ";";
+        return id + ";" + proprietario + ";" + cpf_proprietario + ";" + texto + ";" + data + ";" + valorDoc + ";";
     }
     
     

@@ -16,14 +16,16 @@ public class Transferencia implements Serializable{
     String cpf_comprador;
     Documento documento;
     String data;
+    float valorVenda;
 
-    public Transferencia(String cpf_vendedor, String cpf_comprador, Documento documento, String data) {
+    public Transferencia(String cpf_vendedor, String cpf_comprador, Documento documento, float valorVenda, String data ) {
         this.cpf_vendedor = cpf_vendedor;
         this.cpf_comprador = cpf_comprador;
         this.documento = documento;
         this.data = data;
+        this.valorVenda = valorVenda;
     }
-    
+
     public Transferencia() {
     }
 
@@ -59,11 +61,20 @@ public class Transferencia implements Serializable{
         this.data = data;
     }
 
+    public float getValorVenda() {
+        return valorVenda;
+    }
+
+    public void setValorVenda(float valorVenda) {
+        this.valorVenda = valorVenda;
+    }
+    
+    
     
 
     @Override
     public String toString() {
-        return cpf_vendedor + ";" + cpf_comprador + ";" + data + "#" + documento.toString();
+        return cpf_vendedor + ";" + cpf_comprador + ";"+ valorVenda+";" + data + "#" + documento.toString();
     }
 
     

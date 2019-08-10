@@ -146,13 +146,15 @@ public class Cliente {
         return resultado;
     }
 
-    public String cadastrarDocumento(String loginAux, String text, String latitude, String longitude) {
+    public String cadastrarDocumento(String loginAux, String text, String latitude, String longitude, String valor) {
         String resultado = "";
         try {
             output(Protocolo.CADASTRAR_DOCUMENTO);
             output(latitude+"/"+longitude);
             output(loginAux);
             output(text);
+            float valorDoc = Float.parseFloat(valor);
+            output(valorDoc);
             resultado = (String) input();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Erro de IO!");

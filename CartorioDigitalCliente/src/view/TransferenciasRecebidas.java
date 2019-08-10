@@ -139,7 +139,9 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         ids = transferenciaSelecionada.getDocumento().getId().split("/");
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
-            String resultado = cliente.cadastrarDocumento(Login.loginCPF,transferenciaSelecionada.getDocumento().getTexto(), ids[0], ids[1]);
+            String resultado = cliente.cadastrarDocumento(Login.loginCPF,
+                    transferenciaSelecionada.getDocumento().getTexto(), ids[0], ids[1], 
+                    String.valueOf(transferenciaSelecionada.getValorVenda()));
             if(!resultado.equals("Cadastro efetuado com sucesso")){
                 JOptionPane.showMessageDialog(null, resultado);
             }else{

@@ -58,6 +58,7 @@ public class ThreadTCP implements Runnable {
                     String id = (String) input();
                     String login = (String) input();
                     String texto = (String) input();
+                    float valorDoc = (float) input();
                     boolean achou = false;
                     boolean podeCadastrar = true;
                     for (int i = 0; i < Handler.usuarios.size(); i++) {
@@ -68,7 +69,7 @@ public class ThreadTCP implements Runnable {
                                 }
                             }
                             if (podeCadastrar) {
-                                Documento doc = new Documento(id, Handler.usuarios.get(i).getNome(), login, texto);
+                                Documento doc = new Documento(id, Handler.usuarios.get(i).getNome(), login, texto,valorDoc);
                                 String resultado = han.cadastrarDocumento(doc);
                                 MulticastSender sender = new MulticastSender();
                                 sender.outputDocumento(doc.toString());
@@ -131,7 +132,7 @@ public class ThreadTCP implements Runnable {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
                     Date datax = new Date();
                     String data = sdf.format(datax);
-                    Transferencia transf = new Transferencia(particionada[0], particionada[1], doc, data);
+                    Transferencia transf = new Transferencia(particionada[0], particionada[1], doc, valorVenda, data);
                     String resultado = han.cadastrarTransferencia(transf);
                     if(resultado.equals("Transferência parcialmente feita\nAgora o comprador precisa confirmar.")){
                         MulticastSender sender = new MulticastSender();
