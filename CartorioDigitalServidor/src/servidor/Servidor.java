@@ -20,20 +20,24 @@ import javax.net.ssl.SSLSocket;
  * @author allan
  */
 public class Servidor {
-
+    private static final String nomepathWindowsKey = "ssl\\servidorCartorio.key";
+    private static final String nomepathWindowsTrust = "ssl\\servidorCartorioTrustStore.key";
+    private static final String nomepathLinuxKey = "ssl//servidorCartorio.key";
+    private static final String nomepathLinuxTrust = "ssl//servidorCartorioTrustStore.key";
     private static int PORTATCP = 12345;
     private static int PORTAUDP = 3456;
     static Handler han = Handler.getInstance();
 
     public static void main(String[] args) throws IOException {
         //System.setProperty("javax.net.debug", "all");
-        System.setProperty("javax.net.ssl.keyStore", "ssl\\servidorCartorio.key");
+        System.setProperty("javax.net.ssl.keyStore", nomepathWindowsKey);
         System.setProperty("javax.net.ssl.keyStorePassword", "allanpereira11");
-        System.setProperty("javax.net.ssl.trustStore", "ssl\\servidorCartorioTrustStore.key");
+        System.setProperty("javax.net.ssl.trustStore", nomepathWindowsTrust);
         System.setProperty("javax.net.ssl.trustStorePassword", "allanpereira11");
         ouvirTCP();
         ouvirUDPCidadao();
         ouvirUDPDocumento();
+        ouvirUDPTransferencia();
     }
 
     public static void ouvirTCP() throws IOException {
@@ -87,6 +91,18 @@ public class Servidor {
             public void run() {
                 System.out.println("Esperando Datagram Documento......");
                 MulticastReceiverDocumento receiver = new MulticastReceiverDocumento(han);
+                Thread t = new Thread(receiver);
+                t.start();
+            }
+        }.start();
+    }
+    
+    public static void ouvirUDPTransferencia(){
+        new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Esperando Datagram Transferência......");
+                MulticastReceiverTransferencia receiver = new MulticastReceiverTransferencia(han);
                 Thread t = new Thread(receiver);
                 t.start();
             }

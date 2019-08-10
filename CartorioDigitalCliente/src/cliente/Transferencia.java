@@ -64,7 +64,7 @@ public class Transferencia implements Serializable{
 
     @Override
     public String toString() {
-        return cpf_vendedor + ";" + cpf_comprador + ";" + documento.toString() + ";" + data + ";";
+        return cpf_vendedor + ";" + cpf_comprador + ";" + data + "#" + documento.toString();
     }
 
     

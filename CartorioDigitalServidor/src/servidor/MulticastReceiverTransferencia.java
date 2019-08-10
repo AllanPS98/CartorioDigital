@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,6 +40,7 @@ public class MulticastReceiverTransferencia implements Runnable{
             while (true) {
                 multi.receive(pkt);
                 String transf = new String(buff);
+                System.out.println(transf);
                 Transferencia transfer = transformaTransferenciaEmObjeto(transf);
                 String resultado = han.cadastrarTransferencia(transfer);
                 System.out.println(resultado);
@@ -51,14 +53,18 @@ public class MulticastReceiverTransferencia implements Runnable{
     
     private Transferencia transformaTransferenciaEmObjeto(String transf){
         String[] particionada;
-        particionada = transf.split(";");
-        Documento doc = transformaDocumentoEmObjeto(particionada[2]);
-        Transferencia transfer = new Transferencia(particionada[0], particionada[1], doc, particionada[3]);
+        particionada = transf.split("#");
+        System.out.println(Arrays.toString(particionada));
+        Documento doc = transformaDocumentoEmObjeto(particionada[1]);
+        String[] particionada2;
+        particionada2 = particionada[0].split(";");
+        Transferencia transfer = new Transferencia(particionada2[0], particionada2[1], doc, particionada2[2]);
         return transfer;
     }
     
     
     private Documento transformaDocumentoEmObjeto(String doc){
+        System.out.println(doc);
         String[] particionada = doc.split(";");
         String id = particionada[0];
         String proprietario = particionada[1];

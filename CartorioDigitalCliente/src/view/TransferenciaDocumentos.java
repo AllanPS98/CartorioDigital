@@ -123,6 +123,7 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
 
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
         Documento doc = BuscarDocumentos.docSelecionado;
+        System.out.println(doc);
         String cpf_vendedor = Login.loginCPF;
         String cpf_comprador = this.cpfComprador.getText();
         float valorVenda = Float.parseFloat(this.valor.getText());
@@ -131,9 +132,13 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
             String resultado = cliente.enviarTransferencia(cpf_vendedor, cpf_comprador, doc, valorVenda);
             JOptionPane.showMessageDialog(null, resultado);
+            this.setVisible(false);
+            MenuCidadao.menucidadao = new MenuCidadao();
+            MenuCidadao.menucidadao.setVisible(true);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(TransferenciaDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        cliente.sair();
     }//GEN-LAST:event_enviarActionPerformed
 
     private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed

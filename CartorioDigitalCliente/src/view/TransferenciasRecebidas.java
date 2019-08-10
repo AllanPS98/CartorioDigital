@@ -27,8 +27,9 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
     DefaultListModel modelo;
     List<Transferencia> transfs;
     public static TransferenciasRecebidas transferenciasRecebidas;
-    public TransferenciasRecebidas() {
+    public TransferenciasRecebidas() throws IOException, ClassNotFoundException {
         initComponents();
+        adicionarElementos();
     }
     public void adicionarElementos() throws IOException, ClassNotFoundException {
         Cliente cliente = new Cliente();
@@ -37,6 +38,7 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         transfs = Cliente.transfs;
         listaTransferenciasRecebidas.removeAll();
         modelo = new DefaultListModel();
+        System.out.println("Não tem transferênica = "+ transfs.isEmpty());
         if (!transfs.isEmpty()) {
             for (int i = 0; i < transfs.size(); i++) {
                 modelo.addElement(transfs.get(i).getDocumento().getId());
@@ -129,7 +131,10 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
 
     private void aceitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceitarActionPerformed
         Cliente cliente = new Cliente();
-        transferenciaSelecionada = transfs.get(listaTransferenciasRecebidas.getSelectedIndex());
+        transferenciaSelecionada = transfs.remove(listaTransferenciasRecebidas.getSelectedIndex());
+        modelo.remove(listaTransferenciasRecebidas.getSelectedIndex());
+        listaTransferenciasRecebidas.removeAll();
+        listaTransferenciasRecebidas.setModel(modelo);
         String[] ids;
         ids = transferenciaSelecionada.getDocumento().getId().split("/");
         try {
@@ -158,9 +163,14 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
 
     private void recusarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recusarActionPerformed
         Cliente cliente = new Cliente();
+        transferenciaSelecionada = transfs.remove(listaTransferenciasRecebidas.getSelectedIndex());
+        modelo.remove(listaTransferenciasRecebidas.getSelectedIndex());
+        listaTransferenciasRecebidas.removeAll();
+        listaTransferenciasRecebidas.setModel(modelo);
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
             String resultado = cliente.recusarTransferencia(transferenciaSelecionada);
+            JOptionPane.showMessageDialog(null, resultado);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(TransferenciasRecebidas.class.getName()).log(Level.SEVERE, null, ex);
         }

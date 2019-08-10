@@ -53,7 +53,7 @@ public class MulticastReceiverCidadao implements Runnable {
                 }
                 if (!naoPodeCadastrar) {
                     han.cadastrarUsuario(cid);
-                    System.out.println("Cidadao " + cid.getCpf() + "/" + cid.getNome() + " sincronizado");
+                    System.out.println("Cidadao " + cid.getCpf() + "/" + cid.getNome() + "/" + cid.getSenha()+" sincronizado");
                 }
                 
             }

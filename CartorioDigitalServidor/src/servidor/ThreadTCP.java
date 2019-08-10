@@ -36,7 +36,7 @@ public class ThreadTCP implements Runnable {
     private final Socket cliente;
     private final ObjectInputStream in;
     private final ObjectOutputStream out;
-
+    private static final String path = "dados\\usuarios";
     private static Handler han;
 
     ThreadTCP(Socket cliente, ObjectInputStream in, ObjectOutputStream out, Handler han) {
@@ -48,11 +48,6 @@ public class ThreadTCP implements Runnable {
 
     @Override
     public void run() {
-        try {
-            carregarDados();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, ex);
-        }
         int protocoloAtual;
         while (true) {
 
@@ -60,6 +55,7 @@ public class ThreadTCP implements Runnable {
                 protocoloAtual = (int) input();
                 System.out.println("Protocolo = "+ protocoloAtual);
                 if (protocoloAtual == Protocolo.CADASTRAR_DOCUMENTO) {
+                    carregarDados();
                     String id = (String) input();
                     String login = (String) input();
                     String texto = (String) input();
@@ -87,6 +83,7 @@ public class ThreadTCP implements Runnable {
                     }
 
                 } else if (protocoloAtual == Protocolo.CADASTRAR_USUARIO) {
+                    carregarDados();
                     String nome = (String) input();
                     String cpf = (String) input();
                     String senha = (String) input();
@@ -105,10 +102,11 @@ public class ThreadTCP implements Runnable {
                     if (!cpfIgual) {
                         han.cadastrarUsuario(nome, cpf, senha);
                         MulticastSender sender = new MulticastSender();
-                        sender.outputCidadao(new Cidadao(nome, cpf, senha).toString());
+                        sender.outputCidadao(new Cidadao(nome, cpf, han.criptografarSenha(senha)).toString());
                         output("Cadastro efetuado com sucesso");
                     }
                 } else if (protocoloAtual == Protocolo.LOGIN) {
+                    carregarDados();
                     String cpf = (String) input();
                     String senha = (String) input();
                     boolean podeLogar = false;
@@ -125,6 +123,7 @@ public class ThreadTCP implements Runnable {
                     }
 
                 } else if (protocoloAtual == Protocolo.TRANSFERIR_DOCUMENTO) {
+                    carregarDados();
                     String cpfs = (String) input();
                     Documento doc = (Documento) input();
                     float valorVenda = (float) input();
@@ -137,7 +136,7 @@ public class ThreadTCP implements Runnable {
                     String resultado = han.cadastrarTransferencia(transf);
                     if(resultado.equals("Transferência parcialmente feita\nAgora o comprador precisa confirmar.")){
                         MulticastSender sender = new MulticastSender();
-                        sender.outputTrnasferencia(transf.toString());
+                        sender.outputTransferencia(transf.toString());
                     }
                     output(resultado);
                     
@@ -146,7 +145,7 @@ public class ThreadTCP implements Runnable {
                     break;
                 } else if (protocoloAtual == Protocolo.CARREGAR_LISTA_DOCUMENTOS) {
                     String cpf = (String) input();
-                    
+                    carregarDados();
                     List<Documento> docs = new LinkedList();
                     for(int i = 0; i < Handler.usuarios.size(); i++){
                         if(cpf.equals(Handler.usuarios.get(i).getCpf())){
@@ -156,17 +155,19 @@ public class ThreadTCP implements Runnable {
                     }
                     output(docs);
                 }else if(protocoloAtual == Protocolo.DECODIFICAR_DOC){
+                    carregarDados();
                     String texto = (String) input();
-                    System.out.println("recebeu decodificar");
                     String textoDecod = han.decodificarTexto(texto);
                     System.out.println("decodificado = " + textoDecod);
                     output(textoDecod);
                 }
                 else if(protocoloAtual == Protocolo.CARREGAR_LISTA_TRANSF){
                     String cpf = (String) input();
+                    carregarDados();
                     List<Transferencia> transf = new LinkedList();
                     for(int i = 0; i < Handler.usuarios.size(); i++){
                         if(cpf.equals(Handler.usuarios.get(i).getCpf())){
+                            System.out.println("tem transferencia");
                             transf = Handler.usuarios.get(i).getTransferencias();
                             break;
                         }
@@ -174,6 +175,7 @@ public class ThreadTCP implements Runnable {
                     output(transf);
                 }
                 else if(protocoloAtual == Protocolo.RECUSAR_TRANSF){
+                    carregarDados();
                     Transferencia transf = (Transferencia) input();
                     String resultado = han.recusarTransferencia(transf);
                     output(resultado);
@@ -219,7 +221,6 @@ public class ThreadTCP implements Runnable {
     }
 
     private void sair() throws IOException {
-        System.out.println("tentou sair");
         in.close();
         out.close();
         cliente.close();
@@ -248,6 +249,6 @@ public class ThreadTCP implements Runnable {
     }
 
     public static void carregarDados() throws IOException, FileNotFoundException, ClassNotFoundException {
-        han.lerArquivoSerial("dados\\usuarios");
+        han.lerArquivoSerial(path);
     }
 }

@@ -122,7 +122,7 @@ public class Cliente {
             output(cpf);
             output(senha);
             resultado = (String) input();
-            if(resultado.equals("Login efetuado com sucesso")){
+            if(resultado.equals("Login efetuado com sucesso.")){
                 
             }else{
                 JOptionPane.showMessageDialog(null, resultado);

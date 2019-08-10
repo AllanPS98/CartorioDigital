@@ -31,13 +31,13 @@ public class Handler {
 
     public static Handler han;
     public static List<Cidadao> usuarios = new LinkedList<Cidadao>();
+    private static final String PATH = "dados\\usuarios";
 
     private Handler() {
 
     }
 
     public void cadastrarUsuario(String nome, String cpf, String senha) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-
         Cidadao cid = new Cidadao(nome, cpf, criptografarSenha(senha));
         usuarios.add(cid);
         if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
@@ -46,9 +46,8 @@ public class Handler {
         if (usuarios.get(usuarios.size() - 1).getTransferencias() == null) {
             usuarios.get(usuarios.size() - 1).criarListaTransfVazia();
         }
-
         try {
-            escreverArquivoSerial("dados\\usuarios", usuarios);
+            escreverArquivoSerial(PATH, usuarios);
 
         } catch (IOException ex) {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,9 +59,11 @@ public class Handler {
         if (usuarios.get(usuarios.size() - 1).getDocumentos() == null) {
             usuarios.get(usuarios.size() - 1).criarListaDocsVazia();
         }
-
+        if (usuarios.get(usuarios.size() - 1).getTransferencias() == null) {
+            usuarios.get(usuarios.size() - 1).criarListaTransfVazia();
+        }
         try {
-            escreverArquivoSerial("dados\\usuarios", usuarios);
+            escreverArquivoSerial(PATH, usuarios);
 
         } catch (IOException ex) {
             Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,7 +77,7 @@ public class Handler {
             if (doc.getCpf_proprietario().equals(usuarios.get(i).getCpf())) {
                 usuarios.get(i).getDocumentos().add(doc);
                 try {
-                    escreverArquivoSerial("dados\\usuarios", usuarios);
+                    escreverArquivoSerial(PATH, usuarios);
                     return "Documento cadastrado com sucesso";
                 } catch (IOException ex) {
                     Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,7 +88,7 @@ public class Handler {
         return "Erro ao cadastrar documento";
     }
 
-    public String cadastrarTransferencia(Transferencia transfer) {
+    public String cadastrarTransferencia(Transferencia transfer) throws IOException {
         String resultado = null;
         boolean podeTransferir = true;
         for (int i = 0; i < usuarios.size(); i++) {
@@ -108,26 +109,27 @@ public class Handler {
                 }
             }
             resultado = "Transferência parcialmente feita\nAgora o comprador precisa confirmar.";
-            for(int i = 0; i < usuarios.size(); i++){
-                if(transfer.getCpf_vendedor().equals(usuarios.get(i).getCpf())){
-                    for(int j = 0; j < usuarios.get(i).getTransferencias().size(); j++){
-                        if(usuarios.get(i).getTransferencias().get(j).getDocumento().getId().equals(transfer.getDocumento().getId())){
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (transfer.getCpf_vendedor().equals(usuarios.get(i).getCpf())) {
+                    for (int j = 0; j < usuarios.get(i).getTransferencias().size(); j++) {
+                        if (usuarios.get(i).getTransferencias().get(j).getDocumento().getId().equals(transfer.getDocumento().getId())) {
                             usuarios.get(i).getTransferencias().remove(j);
                         }
-                }
+                    }
                 }
             }
         }
+        escreverArquivoSerial(PATH, usuarios);
         return resultado;
     }
-    
-    public String recusarTransferencia(Transferencia transf){
+
+    public String recusarTransferencia(Transferencia transf) throws IOException {
         Documento docRejeitado = new Documento();
         Transferencia transfRejeitada = new Transferencia();
-        for(int i = 0; i < usuarios.size(); i++){
-            if(usuarios.get(i).getCpf().equals(transf.getCpf_comprador())){
-                for(int j = 0; j < usuarios.get(i).getTransferencias().size(); j++){
-                    if(usuarios.get(i).getTransferencias().get(j).getDocumento().getId().equals(transf.getDocumento().getId())){
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getCpf().equals(transf.getCpf_comprador())) {
+                for (int j = 0; j < usuarios.get(i).getTransferencias().size(); j++) {
+                    if (usuarios.get(i).getTransferencias().get(j).getDocumento().getId().equals(transf.getDocumento().getId())) {
                         transfRejeitada = usuarios.get(i).getTransferencias().get(j);
                         usuarios.get(i).getTransferencias().remove(j);
                     }
@@ -135,12 +137,13 @@ public class Handler {
             }
         }
         docRejeitado = transfRejeitada.getDocumento();
-        for(int i = 0; i < usuarios.size(); i++){
-            if(transf.getCpf_vendedor().equals(usuarios.get(i).getCpf())){
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (transf.getCpf_vendedor().equals(usuarios.get(i).getCpf())) {
                 usuarios.get(i).getDocumentos().add(docRejeitado);
             }
         }
-        return null;
+        escreverArquivoSerial(PATH, usuarios);
+        return "Transferência rejeitada.";
     }
 
     public static Handler getInstance() {
@@ -172,7 +175,7 @@ public class Handler {
                     ObjectInputStream leitura = new ObjectInputStream(arquivo)) {
                 obj = leitura.readObject();
             }
-            if (nome.equals("dados\\usuarios")) {
+            if (nome.equals(PATH)) {
                 usuarios = (List<Cidadao>) obj;
             }
         } catch (FileNotFoundException fnfe) {

@@ -128,7 +128,7 @@ public class CadastroDocumentos extends javax.swing.JFrame {
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
             String resultado = cliente.cadastrarDocumento(Login.loginCPF,textoDoc.getText(), latitude.getText(), longitude.getText());
-            if(!resultado.equals("Cadastro efetuado com sucesso")){
+            if(!resultado.equals("Documento cadastrado com sucesso")){
                 JOptionPane.showMessageDialog(null, resultado);
             }else{
                 //cadastro feito: implementar ação
@@ -137,6 +137,9 @@ public class CadastroDocumentos extends javax.swing.JFrame {
                 this.setVisible(false);
                 MenuCidadao.menucidadao.setVisible(true);
             }
+            this.setVisible(false);
+            MenuCidadao.menucidadao = new MenuCidadao();
+            MenuCidadao.menucidadao.setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(CadastroDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }

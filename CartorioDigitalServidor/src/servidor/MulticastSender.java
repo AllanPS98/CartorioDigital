@@ -39,7 +39,7 @@ public class MulticastSender {
         multi.close();
     }
     
-    public void outputTrnasferencia(String msg) throws UnknownHostException, IOException{
+    public void outputTransferencia(String msg) throws UnknownHostException, IOException{
         InetAddress grupo = InetAddress.getByName("225.4.5.8");
         MulticastSocket multi = new MulticastSocket();
         DatagramPacket pkt = new DatagramPacket(msg.getBytes(), msg.length(), grupo, 3458);

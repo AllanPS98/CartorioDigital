@@ -106,8 +106,16 @@ public class MenuCidadao extends javax.swing.JFrame {
     }//GEN-LAST:event_verDocumentosActionPerformed
 
     private void verTransferenciaRecebidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTransferenciaRecebidaActionPerformed
-        TransferenciasRecebidas.transferenciasRecebidas = new TransferenciasRecebidas();
+        try {
+            TransferenciasRecebidas.transferenciasRecebidas = new TransferenciasRecebidas();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         this.setVisible(false);
+        menucidadao = null;
         TransferenciasRecebidas.transferenciasRecebidas.setVisible(true);
     }//GEN-LAST:event_verTransferenciaRecebidaActionPerformed
 

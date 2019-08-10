@@ -41,6 +41,7 @@ public class MulticastReceiverDocumento implements Runnable{
                 multi.receive(pkt);
                 String doc = new String(buff);
                 Documento docx = transformaDocumentoEmObjeto(doc);
+                docx.setTexto(han.decodificarTexto(docx.getTexto()));
                 boolean podeCadastrar = true;
                 for(int i = 0; i < Handler.usuarios.size(); i++){
                     if(docx.getCpf_proprietario().equals(Handler.usuarios.get(i).getCpf())){
