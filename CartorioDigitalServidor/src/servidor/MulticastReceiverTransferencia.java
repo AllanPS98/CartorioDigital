@@ -59,13 +59,12 @@ public class MulticastReceiverTransferencia implements Runnable{
         String[] particionada;
         particionada = transf.split("#");
         System.out.println(Arrays.toString(particionada));
-        float valor = Float.parseFloat(particionada[2]);
         String[] particionada2;
         particionada2 = particionada[0].split(";");
-        
+        float valor = Float.parseFloat(particionada2[2]);
         Documento doc = transformaDocumentoEmObjeto(particionada[1], valor);
         Transferencia transfer = new Transferencia(particionada2[0], particionada2[1], doc, 
-                valor, particionada[3]);
+                valor, particionada2[3]);
         return transfer;
     }
     
