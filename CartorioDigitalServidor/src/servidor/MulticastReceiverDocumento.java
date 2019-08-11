@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,12 +68,14 @@ public class MulticastReceiverDocumento implements Runnable{
      * @return 
      */
     private Documento transformaDocumentoEmObjeto(String doc){
+        
         String[] particionada = doc.split(";");
+        System.out.println(Arrays.toString(particionada));
         String id = particionada[0];
         String proprietario = particionada[1];
         String cpf_prop = particionada[2];
         String texto = particionada[3];
-        float valor = Float.parseFloat(particionada[4]);
+        float valor = Float.parseFloat(particionada[5]);
         Documento documento = new Documento(id, proprietario, cpf_prop, texto, valor);
         return documento;
     }
