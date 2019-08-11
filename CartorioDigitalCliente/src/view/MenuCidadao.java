@@ -19,6 +19,7 @@ public class MenuCidadao extends javax.swing.JFrame {
      * Creates new form MenuCidadao
      */
     public static MenuCidadao menucidadao;
+
     public MenuCidadao() {
         initComponents();
     }
@@ -87,39 +88,40 @@ public class MenuCidadao extends javax.swing.JFrame {
 
     private void cadastrarDocumentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarDocumentosActionPerformed
         CadastroDocumentos.cadastro_documentos = new CadastroDocumentos();
-        this.setVisible(false);
         menucidadao = null;
+        this.setVisible(false);
+        
         CadastroDocumentos.cadastro_documentos.setVisible(true);
     }//GEN-LAST:event_cadastrarDocumentosActionPerformed
 
     private void verDocumentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDocumentosActionPerformed
-        
         try {
             BuscarDocumentos.buscarDocs = new BuscarDocumentos();
+            menucidadao = null;
+            this.setVisible(false);
+            BuscarDocumentos.buscarDocs.setVisible(true);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
         }
-            this.setVisible(false);
-            menucidadao = null;
-            BuscarDocumentos.buscarDocs.setVisible(true);
-        
+
+
     }//GEN-LAST:event_verDocumentosActionPerformed
 
     private void verTransferenciaRecebidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTransferenciaRecebidaActionPerformed
         try {
             TransferenciasRecebidas.transferenciasRecebidas = new TransferenciasRecebidas();
+            menucidadao = null;
+            this.setVisible(false);
+            TransferenciasRecebidas.transferenciasRecebidas.setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MenuCidadao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        this.setVisible(false);
-        menucidadao = null;
-        TransferenciasRecebidas.transferenciasRecebidas.setVisible(true);
+
+
     }//GEN-LAST:event_verTransferenciaRecebidaActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cadastrarDocumentos;

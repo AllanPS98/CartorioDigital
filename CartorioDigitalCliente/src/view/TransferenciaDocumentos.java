@@ -22,6 +22,7 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
      * Creates new form TransferenciaDocumentos
      */
     public static TransferenciaDocumentos telaTransferencia;
+
     public TransferenciaDocumentos() {
         initComponents();
     }
@@ -130,11 +131,17 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
         Cliente cliente = new Cliente();
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
-            String resultado = cliente.enviarTransferencia(cpf_vendedor, cpf_comprador, doc, valorVenda);
-            JOptionPane.showMessageDialog(null, resultado);
-            this.setVisible(false);
-            MenuCidadao.menucidadao = new MenuCidadao();
-            MenuCidadao.menucidadao.setVisible(true);
+            if (confirmacaoDeSenha.getText().equals(Login.senhaTxT)) {
+                String resultado = cliente.enviarTransferencia(cpf_vendedor, cpf_comprador, doc, valorVenda);
+                JOptionPane.showMessageDialog(null, resultado);
+                if(resultado.equals("Transferência parcialmente feita\nAgora o comprador precisa confirmar.")){
+                this.setVisible(false);
+                MenuCidadao.menucidadao = new MenuCidadao();
+                MenuCidadao.menucidadao.setVisible(true);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Senha incompatível.");
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(TransferenciaDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,11 +158,10 @@ public class TransferenciaDocumentos extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TransferenciaDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+
     }//GEN-LAST:event_voltarActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField confirmacaoDeSenha;

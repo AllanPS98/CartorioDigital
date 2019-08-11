@@ -23,7 +23,7 @@ public class Login extends javax.swing.JFrame {
     
     public static Login telaLogin;
     public static String loginCPF;
-    
+    public static String senhaTxT;
     public Login() {
         initComponents();
         
@@ -124,6 +124,7 @@ public class Login extends javax.swing.JFrame {
             String result = cliente.login(login.getText(), senha.getText());
             if(result.equals("Login efetuado com sucesso.")){
                 this.loginCPF = login.getText();
+                this.senhaTxT = senha.getText();
                 MenuCidadao.menucidadao = new MenuCidadao();
                 this.setVisible(false);
                 MenuCidadao.menucidadao.setVisible(true);

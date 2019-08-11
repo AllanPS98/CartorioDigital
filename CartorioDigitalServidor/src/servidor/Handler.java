@@ -17,6 +17,8 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -91,6 +93,10 @@ public class Handler {
      */
     public String cadastrarDocumento(Documento doc) {
         //codifico o campo do texto do documento antes de salvá-lo
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date datax = new Date();
+        String data = sdf.format(datax);
+        doc.setData(data);
         String docCodificado = codificarTexto(doc.getTexto());
         doc.setTexto(docCodificado);
         for (int i = 0; i < usuarios.size(); i++) {
@@ -116,8 +122,10 @@ public class Handler {
     public String cadastrarTransferencia(Transferencia transfer) throws IOException {
         String resultado = null;
         boolean podeTransferir = true;
+        boolean existeUsuario = false;
         for (int i = 0; i < usuarios.size(); i++) {
             if (transfer.getCpf_comprador().equals(usuarios.get(i).getCpf())) {
+                existeUsuario = true;
                 for (int j = 0; j < usuarios.get(i).getTransferencias().size(); j++) {
                     if (transfer.getDocumento().getId().equals(usuarios.get(i).getTransferencias().get(j).getDocumento().getId())) {
                         podeTransferir = false;
@@ -126,7 +134,7 @@ public class Handler {
                 }
             }
         }
-        if (podeTransferir) {
+        if (podeTransferir && existeUsuario) {
             for (int i = 0; i < usuarios.size(); i++) {
                 if (transfer.getCpf_comprador().equals(usuarios.get(i).getCpf())) {
                     usuarios.get(i).getTransferencias().add(transfer);
@@ -143,6 +151,9 @@ public class Handler {
                     }
                 }
             }
+        }
+        if(!existeUsuario){
+            resultado = "Não existe usuário com este CPF";
         }
         escreverArquivoSerial(PATH, usuarios);
         return resultado;

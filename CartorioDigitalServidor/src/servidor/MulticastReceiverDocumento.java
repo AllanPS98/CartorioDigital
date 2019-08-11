@@ -75,8 +75,10 @@ public class MulticastReceiverDocumento implements Runnable{
         String proprietario = particionada[1];
         String cpf_prop = particionada[2];
         String texto = particionada[3];
+        String data = particionada[4];
         float valor = Float.parseFloat(particionada[5]);
         Documento documento = new Documento(id, proprietario, cpf_prop, texto, valor);
+        documento.setData(data);
         return documento;
     }
 }

@@ -139,6 +139,7 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
         ids = transferenciaSelecionada.getDocumento().getId().split("/");
         try {
             cliente.cliente(TelaInicial.ipAux, TelaInicial.portaAux);
+            transferenciaSelecionada.getDocumento().setTexto(cliente.decodificarTextoDoc(transferenciaSelecionada.getDocumento().getTexto()));
             String resultado = cliente.cadastrarDocumento(Login.loginCPF,
                     transferenciaSelecionada.getDocumento().getTexto(), ids[0], ids[1], 
                     String.valueOf(transferenciaSelecionada.getValorVenda()));
@@ -153,6 +154,8 @@ public class TransferenciasRecebidas extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
             Logger.getLogger(CadastroDocumentos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TransferenciasRecebidas.class.getName()).log(Level.SEVERE, null, ex);
         }
         cliente.sair();
     }//GEN-LAST:event_aceitarActionPerformed

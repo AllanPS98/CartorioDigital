@@ -11,7 +11,6 @@
 package cliente;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -22,7 +21,7 @@ public class Documento implements Serializable{
     String proprietario;
     String cpf_proprietario;
     String texto;
-    Date data;
+    String data;
     float valorDoc;
 
     public Documento(String id, String proprietario, String cpf_proprietario, String texto, float valorDoc) {
@@ -66,20 +65,20 @@ public class Documento implements Serializable{
         this.texto = texto;
     }
 
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
     public float getValorDoc() {
         return valorDoc;
     }
 
     public void setValorDoc(float valorDoc) {
         this.valorDoc = valorDoc;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
     
     
