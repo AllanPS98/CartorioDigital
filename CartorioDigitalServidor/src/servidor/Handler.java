@@ -289,12 +289,13 @@ public class Handler {
      * recebe um lista de cidadãos de outro servidor e sincroniza com a lista desse servidor
      * @param lista 
      */
-    public static void sincronizar(LinkedList<Cidadao> lista){
+    public static void sincronizar(LinkedList<Cidadao> lista) throws IOException{
         for(int i = 0; i < lista.size(); i++){
             sincronizarDocumentos(lista.get(i).getDocumentos(), lista.get(i));
             sincronizarTransferencias(lista.get(i).getTransferencias(), lista.get(i));
         }
         sincronizarCidadaos(lista);
+        escreverArquivoSerial2(PATH, usuarios);
     }
     /**
      * recebe um cidadão e a lista de documentos desse cidadão e sincroniza com os desse servidor
@@ -336,6 +337,26 @@ public class Handler {
             if(!temIgual){
                 usuarios.add(cidadaos.get(i));
             }
+        }
+    }
+    /**
+     * faz a mesma coisa que o outro método de escrever no arquivo, pórem é estático
+     * @param nome
+     * @param obj
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    private static void escreverArquivoSerial2(String nome, Object obj) throws FileNotFoundException, IOException {
+        //Classe responsavel por inserir os objetos
+        try (FileOutputStream arquivo = new FileOutputStream(nome)) {
+            //Grava o objeto cliente no arquivo
+            try ( //Classe responsavel por inserir os objetos
+                    ObjectOutputStream objGravar = new ObjectOutputStream(arquivo)) {
+                //Grava o objeto cliente no arquivo
+                objGravar.writeObject(obj);
+                objGravar.flush();
+            }
+            arquivo.flush();
         }
     }
 }
