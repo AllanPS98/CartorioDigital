@@ -19,4 +19,5 @@ public class Protocolo {
     public static int DECODIFICAR_DOC = 7;
     public static int CARREGAR_LISTA_TRANSF = 8;
     public static int RECUSAR_TRANSF = 9;
+    public static int SINCRONIZAR = 10;
 }

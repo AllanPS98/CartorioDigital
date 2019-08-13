@@ -65,6 +65,16 @@ public class Cidadao implements Serializable{
         this.transferencias = new LinkedList();
     }
 
+    public void setDocumentos(LinkedList<Documento> documentos) {
+        this.documentos = documentos;
+    }
+
+    public void setTransferencias(LinkedList<Transferencia> transferencias) {
+        this.transferencias = transferencias;
+    }
+    
+    
+
     @Override
     public String toString() {
         return nome+";"+cpf+";"+senha+";";

@@ -285,5 +285,43 @@ public class Handler {
         byte[] decoded = Base64.decodeBase64(texto.getBytes());
         return new String(decoded);
     }
-
+    
+    public static void sincronizar(LinkedList<Cidadao> lista){
+        for(int i = 0; i < lista.size(); i++){
+            sincronizarDocumentos(lista.get(i).getDocumentos(), lista.get(i));
+            sincronizarTransferencias(lista.get(i).getTransferencias(), lista.get(i));
+        }
+        sincronizarCidadaos(lista);
+    }
+    
+    private static void sincronizarDocumentos(LinkedList<Documento> docs, Cidadao cid){
+        for(int i = 0; i < usuarios.size(); i++){
+            if(cid.getCpf().equals(usuarios.get(i).getCpf())){
+                usuarios.get(i).setDocumentos((LinkedList<Documento>) docs);
+            }
+        }
+    }
+    
+    private static void sincronizarTransferencias(LinkedList<Transferencia> transfs, Cidadao cid){
+        for(int i = 0; i < usuarios.size(); i++){
+            if(cid.getCpf().equals(usuarios.get(i).getCpf())){
+                usuarios.get(i).setTransferencias((LinkedList<Transferencia>) transfs);
+            }
+        }
+    }
+    
+    private static void sincronizarCidadaos(LinkedList<Cidadao> cidadaos){
+        boolean temIgual;
+        for(int i = 0; i < cidadaos.size(); i++){
+            temIgual = false;
+            for(int j = 0; j < usuarios.size(); j++){
+                if(cidadaos.get(i).equals(usuarios.get(j))){
+                   temIgual = true; 
+                }
+            }
+            if(!temIgual){
+                usuarios.add(cidadaos.get(i));
+            }
+        }
+    }
 }

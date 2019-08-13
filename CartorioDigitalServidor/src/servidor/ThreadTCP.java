@@ -187,6 +187,9 @@ public class ThreadTCP implements Runnable {
                     Transferencia transf = (Transferencia) input();
                     String resultado = han.recusarTransferencia(transf);
                     output(resultado);
+                }else if(protocoloAtual == Protocolo.SINCRONIZAR){
+                    carregarDados();
+                    output(Handler.usuarios);
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println("Erro no protocolo recebido");
