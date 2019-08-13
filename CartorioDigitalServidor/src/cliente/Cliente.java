@@ -138,7 +138,12 @@ public class Cliente {
         }
         return null;
     }
-    
+    /**
+     * Requisita à algum servidor que mande sua lista de usuários para que possa ser sincronizado
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public LinkedList<Cidadao> sincronizar() throws IOException, ClassNotFoundException{
         output(Protocolo.SINCRONIZAR);
         LinkedList<Cidadao> lista = (LinkedList<Cidadao>) input();

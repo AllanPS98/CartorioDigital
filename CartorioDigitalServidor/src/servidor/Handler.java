@@ -285,7 +285,10 @@ public class Handler {
         byte[] decoded = Base64.decodeBase64(texto.getBytes());
         return new String(decoded);
     }
-    
+    /**
+     * recebe um lista de cidadãos de outro servidor e sincroniza com a lista desse servidor
+     * @param lista 
+     */
     public static void sincronizar(LinkedList<Cidadao> lista){
         for(int i = 0; i < lista.size(); i++){
             sincronizarDocumentos(lista.get(i).getDocumentos(), lista.get(i));
@@ -293,7 +296,11 @@ public class Handler {
         }
         sincronizarCidadaos(lista);
     }
-    
+    /**
+     * recebe um cidadão e a lista de documentos desse cidadão e sincroniza com os desse servidor
+     * @param docs
+     * @param cid 
+     */
     private static void sincronizarDocumentos(LinkedList<Documento> docs, Cidadao cid){
         for(int i = 0; i < usuarios.size(); i++){
             if(cid.getCpf().equals(usuarios.get(i).getCpf())){
@@ -301,7 +308,11 @@ public class Handler {
             }
         }
     }
-    
+    /**
+     * recebe um cidadão e a lista de transferências desse cidadão e sincroniza com os desse servidor
+     * @param transfs
+     * @param cid 
+     */
     private static void sincronizarTransferencias(LinkedList<Transferencia> transfs, Cidadao cid){
         for(int i = 0; i < usuarios.size(); i++){
             if(cid.getCpf().equals(usuarios.get(i).getCpf())){
@@ -309,7 +320,10 @@ public class Handler {
             }
         }
     }
-    
+    /**
+     * recebe um cidadãos e sincroniza com os desse servidor
+     * @param cidadaos 
+     */
     private static void sincronizarCidadaos(LinkedList<Cidadao> cidadaos){
         boolean temIgual;
         for(int i = 0; i < cidadaos.size(); i++){
