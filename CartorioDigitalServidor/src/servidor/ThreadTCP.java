@@ -189,10 +189,11 @@ public class ThreadTCP implements Runnable {
                     output(resultado);
                 }else if(protocoloAtual == Protocolo.SINCRONIZAR){
                     carregarDados();
+                    System.out.println("Entrou em sincro");
                     output(Handler.usuarios);
                 }
             } catch (IOException | ClassNotFoundException ex) {
-                System.out.println("Erro no protocolo recebido");
+                System.out.println("Erro no protocolo recebido" + ex.getMessage());
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(ThreadTCP.class.getName()).log(Level.SEVERE, null, ex);
             }

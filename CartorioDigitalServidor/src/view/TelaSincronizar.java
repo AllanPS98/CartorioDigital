@@ -23,7 +23,7 @@ public class TelaSincronizar extends javax.swing.JFrame {
     /**
      * Creates new form TelaSincronizar
      */
-    private static final String NOME_PATH_TRUST = "ssl\\servidorCartorioTrustStore.key";
+    private static final String NOME_PATH_TRUST = "ssl\\clienteCartorioTrustStore.key";
     public TelaSincronizar() {
         initComponents();
     }
